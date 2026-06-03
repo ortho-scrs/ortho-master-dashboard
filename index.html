@@ -423,7 +423,9 @@ const CLINIC_COORDS = [42.7198, -83.3677]; // pre-geocoded
 
 let map, allPatients = [], currentPeriod = 'monthly';
 let noShowLayers = [], dismissedLayers = [];
-let geocodeCache = JSON.parse(localStorage.getItem('geocodeCache') || '{}');
+// Clear old geocode cache to force re-geocoding with updated full addresses
+localStorage.removeItem('geocodeCache');
+let geocodeCache = {};
 let incomeCache = JSON.parse(localStorage.getItem('incomeCache') || '{}');
 
 // Init map
@@ -641,7 +643,9 @@ async function loadData() {
     for (let i = 0; i < patients.length; i++) {
       const p = patients[i];
       progressEl.textContent = `Geocoding ${i + 1} of ${patients.length}: ${p.patientId}`;
-      p.coords = await geocodeAddress(p.address);
+      // Append Column B (location/metro) to anchor geocoding to correct city
+      const fullAddress = p.location ? `${p.address}, ${p.location}` : p.address;
+      p.coords = await geocodeAddress(fullAddress);
       const zip = extractZip(p.address);
       if (zip) p.income = await getMedianIncome(zip);
     }
