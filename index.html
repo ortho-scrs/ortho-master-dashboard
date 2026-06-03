@@ -35,8 +35,6 @@
     flex-direction: column;
     height: 100vh;
   }
-
-  /* HEADER */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -49,11 +47,7 @@
     position: relative;
     z-index: 1000;
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .brand { display: flex; align-items: center; gap: 12px; }
   .brand-icon {
     width: 36px; height: 36px;
     background: linear-gradient(135deg, var(--yellow), #f59e0b);
@@ -61,25 +55,9 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
   }
-  .brand-text h1 {
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--text);
-  }
-  .brand-text small {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-  }
-  .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  /* PERIOD TOGGLE */
+  .brand-text h1 { font-size: 16px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+  .brand-text small { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .header-controls { display: flex; align-items: center; gap: 24px; }
   .period-toggle {
     display: flex;
     background: var(--bg);
@@ -91,7 +69,7 @@
     background: transparent;
     border: none;
     color: var(--text-muted);
-    padding: 8px 16px;
+    padding: 8px 14px;
     font-family: 'Syne', sans-serif;
     font-size: 12px;
     font-weight: 600;
@@ -100,110 +78,54 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .period-toggle button.active {
-    background: var(--accent);
-    color: #fff;
-  }
-  .period-toggle button:hover:not(.active) {
-    background: var(--surface2);
-    color: var(--text);
-  }
-
-  /* STATUS TOGGLES */
-  .status-toggles {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-  }
+  .period-toggle button.active { background: var(--accent); color: #fff; }
+  .period-toggle button:hover:not(.active) { background: var(--surface2); color: var(--text); }
+  .status-toggles { display: flex; gap: 16px; align-items: center; }
   .toggle-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    user-select: none;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer; user-select: none;
   }
   .toggle-item.noshow { color: var(--red); }
   .toggle-item.dismissed { color: var(--green); }
-  .toggle-switch {
-    position: relative;
-    width: 40px; height: 22px;
-  }
+  .toggle-switch { position: relative; width: 40px; height: 22px; }
   .toggle-switch input { display: none; }
   .toggle-track {
-    position: absolute;
-    inset: 0;
-    border-radius: 11px;
-    background: var(--border);
-    transition: background 0.25s;
-    cursor: pointer;
+    position: absolute; inset: 0; border-radius: 11px;
+    background: var(--border); transition: background 0.25s; cursor: pointer;
   }
   .toggle-thumb {
-    position: absolute;
-    top: 3px; left: 3px;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    transition: transform 0.25s;
-    pointer-events: none;
+    position: absolute; top: 3px; left: 3px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; transition: transform 0.25s; pointer-events: none;
   }
-  .toggle-switch input:checked ~ .toggle-track { background: currentColor; }
-  .toggle-switch input:checked ~ .toggle-thumb { transform: translateX(18px); }
   .toggle-item.noshow .toggle-switch input:checked ~ .toggle-track { background: var(--red); }
   .toggle-item.dismissed .toggle-switch input:checked ~ .toggle-track { background: var(--green); }
-
-  /* STATS BAR */
+  .toggle-switch input:checked ~ .toggle-thumb { transform: translateX(18px); }
   .stats-bar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-shrink: 0;
+    padding: 0 24px; height: 72px;
+    display: flex; align-items: center; gap: 0; flex-shrink: 0;
   }
   .stat-card {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 0 28px 0 0;
-    margin-right: 28px;
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 0 28px 0 0; margin-right: 28px;
     border-right: 1px solid var(--border);
   }
   .stat-card:last-child { border-right: none; }
-  .stat-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-  }
-  .stat-value {
-    font-size: 22px;
-    font-weight: 800;
-    line-height: 1;
-  }
+  .stat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .stat-value { font-size: 22px; font-weight: 800; line-height: 1; }
   .stat-value.red { color: var(--red); }
   .stat-value.green { color: var(--green); }
   .stat-value.blue { color: var(--accent2); }
   .stat-value.period { color: var(--text); font-size: 16px; }
-
-  /* LOADING OVERLAY */
   #loading-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(8, 12, 20, 0.92);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    gap: 20px;
+    position: fixed; inset: 0;
+    background: rgba(8,12,20,0.92);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999; gap: 20px;
   }
   .spinner {
     width: 48px; height: 48px;
@@ -213,130 +135,45 @@
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 0.05em;
-  }
-  .loading-progress {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  /* MAP */
-  #map-container {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-  #map {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* LEAFLET OVERRIDES */
-  .leaflet-container {
-    background: #0a1628 !important;
-    font-family: 'Syne', sans-serif;
-  }
+  .loading-text { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text-dim); letter-spacing: 0.05em; }
+  .loading-progress { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  #map-container { flex: 1; position: relative; overflow: hidden; }
+  #map { width: 100%; height: 100%; }
+  .leaflet-container { background: #0a1628 !important; font-family: 'Syne', sans-serif; }
   .leaflet-popup-content-wrapper {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
-    color: var(--text);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: var(--card-shadow); color: var(--text);
   }
   .leaflet-popup-tip { background: var(--surface2); }
-  .leaflet-popup-content {
-    margin: 14px 16px;
-    font-family: 'Syne', sans-serif;
-  }
-  .popup-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--accent2);
-  }
-  .popup-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    font-size: 12px;
-    margin-bottom: 4px;
-    font-family: 'DM Mono', monospace;
-  }
+  .leaflet-popup-content { margin: 14px 16px; font-family: 'Syne', sans-serif; }
+  .popup-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--accent2); }
+  .popup-row { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; margin-bottom: 4px; font-family: 'DM Mono', monospace; }
   .popup-key { color: var(--text-muted); }
   .popup-val { color: var(--text); font-weight: 500; text-align: right; }
   .popup-status-noshow { color: var(--red); font-weight: 700; }
   .popup-status-dismissed { color: var(--green); font-weight: 700; }
-
-  /* PATIENT ID LABELS */
-  .patient-label {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-  }
+  .patient-label { background: transparent; border: none; box-shadow: none; }
   .patient-label-inner {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8);
-    white-space: nowrap;
-    pointer-events: none;
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8);
+    white-space: nowrap; pointer-events: none;
   }
-
-  /* LINE TOOLTIP */
   .line-tooltip {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text) !important;
-    font-family: 'DM Mono', monospace !important;
-    font-size: 12px !important;
-    border-radius: 6px !important;
-    padding: 6px 10px !important;
-    box-shadow: var(--card-shadow) !important;
+    background: var(--surface2) !important; border: 1px solid var(--border) !important;
+    color: var(--text) !important; font-family: 'DM Mono', monospace !important;
+    font-size: 12px !important; border-radius: 6px !important;
+    padding: 6px 10px !important; box-shadow: var(--card-shadow) !important;
   }
-
-  /* LEGEND */
   .map-legend {
-    position: absolute;
-    bottom: 30px;
-    right: 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    z-index: 500;
-    min-width: 160px;
+    position: absolute; bottom: 30px; right: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; z-index: 500; min-width: 160px;
   }
-  .legend-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    font-family: 'DM Mono', monospace;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .legend-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
+  .legend-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; font-family: 'DM Mono', monospace; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
   @media (max-width: 768px) {
-    header { padding: 0 12px; height: auto; flex-wrap: wrap; padding: 12px; gap: 12px; }
+    header { padding: 12px; height: auto; flex-wrap: wrap; gap: 12px; }
     .stats-bar { height: auto; flex-wrap: wrap; padding: 12px; gap: 12px; }
     .stat-card { border-right: none; padding: 0; margin: 0; }
     .header-controls { flex-wrap: wrap; gap: 12px; }
@@ -420,56 +257,33 @@
 
 <script>
 const CSV_URL = 'https://script.google.com/macros/s/AKfycbwK9CDDJZLuz8npPertJh8Igk1xZC-UAerBqFUW1Izu0u39wC-Jt5wUUQNipB-UT90zEg/exec';
-const CENSUS_KEY = 'c52beae988ef5421426ea90ff97eb525fd2bcf6c';
+const CLINIC_COORDS = [42.7198, -83.3677];
 const CLINIC_ADDR = '7250 Dixie Hwy Ste 300, Independence Township, MI 48346';
-const CLINIC_COORDS = [42.7198, -83.3677]; // pre-geocoded
 
 let map, allPatients = [], currentPeriod = 'monthly';
 let noShowLayers = [], dismissedLayers = [];
-// Clear old geocode cache to force re-geocoding with updated full addresses
-localStorage.removeItem('geocodeCache');
-let geocodeCache = {};
-let incomeCache = JSON.parse(localStorage.getItem('incomeCache') || '{}');
-let incomeCache = JSON.parse(localStorage.getItem('incomeCache') || '{}');
+let geocodeCache = JSON.parse(localStorage.getItem('geocodeCache') || '{}');
 
 // Init map
-map = L.map('map', {
-  center: CLINIC_COORDS,
-  zoom: 10,
-  zoomControl: true,
-  preferCanvas: true
-});
-
+map = L.map('map', { center: CLINIC_COORDS, zoom: 10, zoomControl: true });
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '©OpenStreetMap ©CartoDB',
-  subdomains: 'abcd',
-  maxZoom: 19
+  attribution: '©OpenStreetMap ©CartoDB', subdomains: 'abcd', maxZoom: 19
 }).addTo(map);
 
-// Clinic yellow pin
+// Clinic pin
 const clinicIcon = L.divIcon({
   html: `<div style="width:22px;height:22px;background:#facc15;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>`,
-  iconSize: [22, 22], iconAnchor: [11, 22], className: ''
+  iconSize: [22,22], iconAnchor: [11,22], className: ''
 });
-L.marker(CLINIC_COORDS, { icon: clinicIcon })
-  .addTo(map)
+L.marker(CLINIC_COORDS, { icon: clinicIcon }).addTo(map)
   .bindPopup(`<div class="popup-title">🦷 Clinic</div><div class="popup-row"><span class="popup-key">Address</span><span class="popup-val">${CLINIC_ADDR}</span></div>`);
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const R = 3958.8;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
   const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-function extractZip(address) {
-  const m = address.match(/\b(\d{5})(?:-\d{4})?\b/);
-  return m ? m[1] : null;
-}
-
-async function getMedianIncome(zip) {
-  return null; // Disabled for now
 }
 
 async function geocodeAddress(address) {
@@ -479,10 +293,7 @@ async function geocodeAddress(address) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&countrycodes=us`;
-    const res = await fetch(url, { 
-      headers: { 'Accept-Language': 'en', 'User-Agent': 'SmileCrewDashboard/1.0' },
-      signal: controller.signal
-    });
+    const res = await fetch(url, { headers: { 'Accept-Language': 'en' }, signal: controller.signal });
     clearTimeout(timeout);
     const data = await res.json();
     if (data && data[0]) {
@@ -492,42 +303,31 @@ async function geocodeAddress(address) {
       return coords;
     }
   } catch(e) {
-    console.warn('Geocode failed for:', address, e.message);
+    console.warn('Geocode failed for:', address);
   }
   return null;
 }
 
 function filterByPeriod(patients, period) {
   const now = new Date();
-  // Last month calculation
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const lastMonthYear = lastMonth.getFullYear();
-  const lastMonthIndex = lastMonth.getMonth();
-
+  const lastMonth = new Date(now.getFullYear(), now.getMonth()-1, 1);
   return patients.filter(p => {
     if (!p.appointmentTime) return true;
     const d = new Date(p.appointmentTime);
     if (isNaN(d)) return true;
-    if (period === 'monthly') {
-      return d.getFullYear() === lastMonthYear && d.getMonth() === lastMonthIndex;
-    } else if (period === 'q1') {
-      return d.getFullYear() === now.getFullYear() && d.getMonth() >= 0 && d.getMonth() <= 2;
-    } else if (period === 'q2') {
-      return d.getFullYear() === now.getFullYear() && d.getMonth() >= 3 && d.getMonth() <= 5;
-    } else if (period === 'q3') {
-      return d.getFullYear() === now.getFullYear() && d.getMonth() >= 6 && d.getMonth() <= 8;
-    } else if (period === 'q4') {
-      return d.getFullYear() === now.getFullYear() && d.getMonth() >= 9 && d.getMonth() <= 11;
-    } else {
-      return d.getFullYear() === now.getFullYear();
-    }
+    if (period === 'monthly') return d.getFullYear() === lastMonth.getFullYear() && d.getMonth() === lastMonth.getMonth();
+    if (period === 'q1') return d.getFullYear() === now.getFullYear() && d.getMonth() <= 2;
+    if (period === 'q2') return d.getFullYear() === now.getFullYear() && d.getMonth() >= 3 && d.getMonth() <= 5;
+    if (period === 'q3') return d.getFullYear() === now.getFullYear() && d.getMonth() >= 6 && d.getMonth() <= 8;
+    if (period === 'q4') return d.getFullYear() === now.getFullYear() && d.getMonth() >= 9;
+    return d.getFullYear() === now.getFullYear();
   });
 }
 
 function getPeriodLabel(period) {
   const now = new Date();
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonth = new Date(now.getFullYear(), now.getMonth()-1, 1);
   if (period === 'monthly') return `${months[lastMonth.getMonth()]} ${lastMonth.getFullYear()}`;
   if (period === 'q1') return `Q1 ${now.getFullYear()}`;
   if (period === 'q2') return `Q2 ${now.getFullYear()}`;
@@ -539,14 +339,13 @@ function getPeriodLabel(period) {
 function clearMapLayers() {
   noShowLayers.forEach(l => map.removeLayer(l));
   dismissedLayers.forEach(l => map.removeLayer(l));
-  noShowLayers = [];
-  dismissedLayers = [];
+  noShowLayers = []; dismissedLayers = [];
 }
 
 function makePin(color) {
   return L.divIcon({
     html: `<div style="width:18px;height:18px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid rgba(255,255,255,0.7);box-shadow:0 2px 8px rgba(0,0,0,0.6)"></div>`,
-    iconSize: [18, 18], iconAnchor: [9, 18], className: ''
+    iconSize: [18,18], iconAnchor: [9,18], className: ''
   });
 }
 
@@ -554,8 +353,7 @@ function renderPatients(patients) {
   clearMapLayers();
   const showNoShow = document.getElementById('toggle-noshow').checked;
   const showDismissed = document.getElementById('toggle-dismissed').checked;
-
-  let noshoCount = 0, dismissCount = 0, totalDist = 0, distCount = 0, distances = [];
+  let noshoCount = 0, dismissCount = 0, distances = [];
 
   patients.forEach(p => {
     if (!p.coords) return;
@@ -567,36 +365,21 @@ function renderPatients(patients) {
 
     const color = isNoShow ? '#ef4444' : '#22c55e';
     const dist = haversineDistance(p.coords[0], p.coords[1], CLINIC_COORDS[0], CLINIC_COORDS[1]);
-    distances.push(dist); totalDist += dist; distCount++;
+    distances.push(dist);
     if (isNoShow) noshoCount++; else dismissCount++;
 
-    // Dotted line
     const line = L.polyline([p.coords, CLINIC_COORDS], {
-      color: color,
-      weight: 3,
-      opacity: 0.55,
-      dashArray: '6, 8',
-      lineCap: 'round'
+      color, weight: 3, opacity: 0.55, dashArray: '6, 8', lineCap: 'round'
     });
-    line.bindTooltip(`${dist.toFixed(1)} miles to clinic`, {
-      className: 'line-tooltip',
-      sticky: true
-    });
+    line.bindTooltip(`${dist.toFixed(1)} miles to clinic`, { className: 'line-tooltip', sticky: true });
 
-    // Pin
     const marker = L.marker(p.coords, { icon: makePin(color) });
-
-    // Label
     const label = L.marker(p.coords, {
       icon: L.divIcon({
         html: `<div class="patient-label-inner">${p.patientId}</div>`,
-        className: 'patient-label',
-        iconAnchor: [-4, 26]
-      }),
-      interactive: false
+        className: 'patient-label', iconAnchor: [-4, 26]
+      }), interactive: false
     });
-
-    // Popup
 
     const statusClass = isNoShow ? 'popup-status-noshow' : 'popup-status-dismissed';
     marker.bindPopup(`
@@ -605,7 +388,6 @@ function renderPatients(patients) {
       <div class="popup-row"><span class="popup-key">Address</span><span class="popup-val">${p.address}</span></div>
       <div class="popup-row"><span class="popup-key">Appt Type</span><span class="popup-val">${p.apptType || '—'}</span></div>
       <div class="popup-row"><span class="popup-key">Distance</span><span class="popup-val">${dist.toFixed(1)} mi</span></div>
-
     `);
 
     const layerGroup = L.layerGroup([line, marker, label]).addTo(map);
@@ -613,16 +395,18 @@ function renderPatients(patients) {
     else dismissedLayers.push(layerGroup);
   });
 
-  // Update stats
+  // Median distance
+  let medianDist = '—';
+  if (distances.length > 0) {
+    const sorted = [...distances].sort((a,b) => a-b);
+    const mid = Math.floor(sorted.length/2);
+    const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid-1]+sorted[mid])/2;
+    medianDist = `${median.toFixed(1)} mi`;
+  }
+
   document.getElementById('stat-noshows').textContent = noshoCount;
   document.getElementById('stat-dismissed').textContent = dismissCount;
-  // Calculate median distance
-  const medianDist = distCount > 0 ? (() => {
-    const sorted = distances.sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-  })() : 0;
-  document.getElementById('stat-distance').textContent = distCount > 0 ? `${medianDist.toFixed(1)} mi` : '—';
+  document.getElementById('stat-distance').textContent = medianDist;
   document.getElementById('stat-period').textContent = getPeriodLabel(currentPeriod);
 }
 
@@ -642,18 +426,17 @@ function setPeriod(period) {
 async function loadData() {
   const overlay = document.getElementById('loading-overlay');
   const progressEl = document.getElementById('loading-progress');
-
   try {
     progressEl.textContent = 'Fetching spreadsheet data...';
     const response = await fetch(CSV_URL);
     const csvText = await response.text();
-
     const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
     const rows = parsed.data;
 
-    // Build patient objects — use actual header names
+    console.log('Total rows from CSV:', rows.length);
+    console.log('Sample statuses:', rows.slice(0,5).map(r => Object.values(r)[2]));
+
     const patients = rows.map(row => {
-      // Try to find columns by index if headers don't match
       const vals = Object.values(row);
       return {
         appointmentTime: vals[0] || '',
@@ -663,27 +446,20 @@ async function loadData() {
         patientId: vals[4] || '',
         address: vals[5] || '',
         sheetName: vals[6] || '',
-        coords: null,
-        income: null
+        coords: null
       };
     }).filter(p => p.address && p.patientId && (p.status === 'No-Show' || p.status === 'Dismissed'));
 
-    console.log('Total rows loaded from CSV:', rows.length);
-    console.log('Rows after filter:', patients.length);
-    console.log('Sample statuses:', rows.slice(0,5).map(r => Object.values(r)[2]));
-
-    progressEl.textContent = `Geocoding ${patients.length} addresses...`;
+    console.log('Patients after filter:', patients.length);
 
     for (let i = 0; i < patients.length; i++) {
       const p = patients[i];
+      progressEl.textContent = `Geocoding ${i+1} of ${patients.length}: ${p.patientId}`;
       try {
-        progressEl.textContent = `Geocoding ${i + 1} of ${patients.length}: ${p.patientId}`;
-        // Force geocoding to Michigan only
         const fullAddress = `${p.address}, Michigan, USA`;
         p.coords = await geocodeAddress(fullAddress);
-        // Income lookup disabled
-      } catch(err) {
-        console.warn(`Skipping patient ${p.patientId}:`, err.message);
+      } catch(e) {
+        console.warn('Geocode error for', p.patientId);
         p.coords = null;
       }
     }
