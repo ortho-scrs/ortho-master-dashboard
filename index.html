@@ -469,23 +469,7 @@ function extractZip(address) {
 }
 
 async function getMedianIncome(zip) {
-  if (!zip) return null;
-  if (incomeCache[zip]) return incomeCache[zip];
-  try {
-    const res = await fetch(`https://api.census.gov/data/2021/acs/acs5?get=B19013_001E&for=zip+code+tabulation+area:${zip}&key=${CENSUS_KEY}`);
-    const data = await res.json();
-    if (data && data[1]) {
-      const income = parseInt(data[1][0]);
-      if (income > 0) {
-        incomeCache[zip] = income;
-        localStorage.setItem('incomeCache', JSON.stringify(incomeCache));
-        return income;
-      }
-    }
-  } catch(e) {
-    console.warn('Census API error for zip', zip, e);
-  }
-  return null;
+  return null; // Disabled for now
 }
 
 async function geocodeAddress(address) {
@@ -613,7 +597,7 @@ function renderPatients(patients) {
     });
 
     // Popup
-    const incomeStr = p.income ? `$${parseInt(p.income).toLocaleString()}` : 'N/A';
+
     const statusClass = isNoShow ? 'popup-status-noshow' : 'popup-status-dismissed';
     marker.bindPopup(`
       <div class="popup-title">Patient ${p.patientId}</div>
@@ -621,7 +605,7 @@ function renderPatients(patients) {
       <div class="popup-row"><span class="popup-key">Address</span><span class="popup-val">${p.address}</span></div>
       <div class="popup-row"><span class="popup-key">Appt Type</span><span class="popup-val">${p.apptType || '—'}</span></div>
       <div class="popup-row"><span class="popup-key">Distance</span><span class="popup-val">${dist.toFixed(1)} mi</span></div>
-      <div class="popup-row"><span class="popup-key">Median Income</span><span class="popup-val">${incomeStr}</span></div>
+
     `);
 
     const layerGroup = L.layerGroup([line, marker, label]).addTo(map);
@@ -697,8 +681,7 @@ async function loadData() {
         // Force geocoding to Michigan only
         const fullAddress = `${p.address}, Michigan, USA`;
         p.coords = await geocodeAddress(fullAddress);
-        const zip = extractZip(p.address);
-        if (zip) p.income = await getMedianIncome(zip);
+        // Income lookup disabled
       } catch(err) {
         console.warn(`Skipping patient ${p.patientId}:`, err.message);
         p.coords = null;
