@@ -463,20 +463,7 @@ function extractZip(address) {
 }
 
 async function getMedianIncome(zip) {
-  if (!zip) return null;
-  if (incomeCache[zip]) return incomeCache[zip];
-  try {
-    const res = await fetch(`https://api.census.gov/data/2021/acs/acs5?get=B19013_001E&for=zip+code+tabulation+area:${zip}&key=${CENSUS_KEY}`);
-    const data = await res.json();
-    if (data && data[1]) {
-      const income = parseInt(data[1][0]);
-      if (income > 0) {
-        incomeCache[zip] = income;
-        localStorage.setItem('incomeCache', JSON.stringify(incomeCache));
-        return income;
-      }
-    }
-  } catch(e) {}
+  // Census API temporarily disabled — returns null until key is activated
   return null;
 }
 
