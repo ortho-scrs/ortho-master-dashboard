@@ -172,6 +172,66 @@
   .legend-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; font-family: 'DM Mono', monospace; }
   .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  /* TABLES */
+  .tables-container {
+    display: flex;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--bg);
+    flex-shrink: 0;
+    max-height: 220px;
+    overflow: hidden;
+  }
+  .data-table-wrap {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .table-header {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .table-header.red { color: var(--red); }
+  .table-header.green { color: var(--green); }
+  .table-scroll { overflow-y: auto; flex: 1; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .data-table th {
+    padding: 7px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    background: var(--surface2);
+    position: sticky;
+    top: 0;
+  }
+  .data-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--surface2); }
+  .zip-rank { color: var(--text-muted); font-size: 10px; }
+  .zip-code { font-weight: 600; color: var(--text); }
+  .zip-count-red { color: var(--red); font-weight: 700; }
+  .zip-count-green { color: var(--green); font-weight: 700; }
+  .zip-income { color: var(--accent2); }
+
   @media (max-width: 768px) {
     header { padding: 12px; height: auto; flex-wrap: wrap; gap: 12px; }
     .stats-bar { height: auto; flex-wrap: wrap; padding: 12px; gap: 12px; }
@@ -189,7 +249,7 @@
 </div>
 
 <header>
-  <div class="brand">
+  <div class="brand" onclick="window.location.href='index.html'" style="cursor:pointer">
     <div class="brand-icon">🦷</div>
     <div class="brand-text">
       <h1>SmileCrew — Buda, TX</h1>
@@ -242,6 +302,45 @@
   <div class="stat-card">
     <div class="stat-label">Period</div>
     <div class="stat-value period" id="stat-period">—</div>
+  </div>
+</div>
+
+<div class="tables-container">
+  <div class="data-table-wrap">
+    <div class="table-header red">🔴 No-Show Zip Codes</div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Zip Code</th>
+            <th>Count</th>
+            <th>Median Income</th>
+          </tr>
+        </thead>
+        <tbody id="noshow-table-body">
+          <tr><td colspan="4" style="color:var(--text-muted);text-align:center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="data-table-wrap">
+    <div class="table-header green">🟢 Dismissed Zip Codes</div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Zip Code</th>
+            <th>Count</th>
+            <th>Median Income</th>
+          </tr>
+        </thead>
+        <tbody id="dismissed-table-body">
+          <tr><td colspan="4" style="color:var(--text-muted);text-align:center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -363,6 +462,7 @@ function renderPatients(patients) {
       <div class="popup-row"><span class="popup-key">Address</span><span class="popup-val">${p.address}</span></div>
       <div class="popup-row"><span class="popup-key">Appt Type</span><span class="popup-val">${p.apptType || '—'}</span></div>
       <div class="popup-row"><span class="popup-key">Distance</span><span class="popup-val">${dist.toFixed(1)} mi</span></div>
+      <div class="popup-row"><span class="popup-key">Median Income</span><span class="popup-val">${p.income ? '$' + parseInt(p.income).toLocaleString() : 'N/A'}</span></div>
     `);
 
     const layerGroup = L.layerGroup([line, marker, label]).addTo(map);
@@ -384,9 +484,65 @@ function renderPatients(patients) {
   document.getElementById('stat-period').textContent = getPeriodLabel(currentPeriod);
 }
 
+function extractZipFromAddress(address) {
+  const match = address.match(/(\d{5})(?:-\d{4})?/);
+  return match ? match[1] : null;
+}
+
+function renderTables(patients) {
+  const filtered = filterByPeriod(patients, currentPeriod);
+  const noShowZips = {};
+  const dismissedZips = {};
+
+  filtered.forEach(p => {
+    const zip = extractZipFromAddress(p.address);
+    if (!zip) return;
+    const income = p.income ? '$' + parseInt(p.income).toLocaleString() : 'N/A';
+    if (p.status === 'No-Show') {
+      if (!noShowZips[zip]) noShowZips[zip] = { count: 0, income };
+      noShowZips[zip].count++;
+    } else if (p.status === 'Dismissed') {
+      if (!dismissedZips[zip]) dismissedZips[zip] = { count: 0, income };
+      dismissedZips[zip].count++;
+    }
+  });
+
+  const sortedNoShow = Object.entries(noShowZips).sort((a,b) => b[1].count - a[1].count);
+  const sortedDismissed = Object.entries(dismissedZips).sort((a,b) => b[1].count - a[1].count);
+
+  const noShowBody = document.getElementById('noshow-table-body');
+  if (sortedNoShow.length === 0) {
+    noShowBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted);text-align:center">No data</td></tr>';
+  } else {
+    noShowBody.innerHTML = sortedNoShow.map(([ zip, data ], i) => `
+      <tr>
+        <td class="zip-rank">${i+1}</td>
+        <td class="zip-code">${zip}</td>
+        <td class="zip-count-red">${data.count}</td>
+        <td class="zip-income">${data.income}</td>
+      </tr>
+    `).join('');
+  }
+
+  const dismissedBody = document.getElementById('dismissed-table-body');
+  if (sortedDismissed.length === 0) {
+    dismissedBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted);text-align:center">No data</td></tr>';
+  } else {
+    dismissedBody.innerHTML = sortedDismissed.map(([ zip, data ], i) => `
+      <tr>
+        <td class="zip-rank">${i+1}</td>
+        <td class="zip-code">${zip}</td>
+        <td class="zip-count-green">${data.count}</td>
+        <td class="zip-income">${data.income}</td>
+      </tr>
+    `).join('');
+  }
+}
+
 function updateFilters() {
   const filtered = filterByPeriod(allPatients, currentPeriod);
   renderPatients(filtered);
+  renderTables(allPatients);
 }
 
 function setPeriod(period) {
@@ -421,6 +577,7 @@ async function loadData() {
         sheetName: vals[6] || '',
         lat: vals[7] || '',
         lng: vals[8] || '',
+        income: vals[9] || '',
         coords: null
       };
     }).filter(p => p.address && p.patientId && (p.status === 'No-Show' || p.status === 'Dismissed'));
