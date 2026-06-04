@@ -174,26 +174,30 @@
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
   /* TABLES */
   .tables-container {
+    position: absolute;
+    top: 12px;
+    right: 12px;
     display: flex;
-    gap: 16px;
-    padding: 16px 24px;
-    background: var(--bg);
-    flex-shrink: 0;
-    max-height: 220px;
+    flex-direction: column;
+    gap: 10px;
+    width: 280px;
+    z-index: 500;
+    max-height: calc(100% - 24px);
     overflow: hidden;
   }
   .data-table-wrap {
-    flex: 1;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    max-height: 180px;
+    opacity: 0.93;
   }
   .table-header {
-    padding: 10px 14px;
-    font-size: 11px;
+    padding: 7px 10px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -206,9 +210,9 @@
   .table-scroll { overflow-y: auto; flex: 1; }
   .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
   .data-table th {
-    padding: 7px 12px;
+    padding: 5px 8px;
     text-align: left;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -219,9 +223,10 @@
     top: 0;
   }
   .data-table td {
-    padding: 7px 12px;
+    padding: 5px 8px;
     border-bottom: 1px solid var(--border);
     font-family: 'DM Mono', monospace;
+    font-size: 11px;
     color: var(--text-dim);
   }
   .data-table tr:last-child td { border-bottom: none; }
@@ -305,7 +310,9 @@
   </div>
 </div>
 
-<div class="tables-container">
+<div id="map-container">
+  <div id="map"></div>
+  <div class="tables-container">
   <div class="data-table-wrap">
     <div class="table-header red">🔴 No-Show Zip Codes</div>
     <div class="table-scroll">
@@ -343,9 +350,6 @@
     </div>
   </div>
 </div>
-
-<div id="map-container">
-  <div id="map"></div>
   <div class="map-legend">
     <div class="legend-title">Legend</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Clinic</div>
