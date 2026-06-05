@@ -443,6 +443,8 @@ function renderPatients(patients) {
 
     const color = isNoShow ? '#ef4444' : '#22c55e';
     const dist = haversineDistance(p.coords[0], p.coords[1], CLINIC_COORDS[0], CLINIC_COORDS[1]);
+    // Skip pins more than 75 miles from clinic
+    if (dist > 75) return;
     distances.push(dist);
     if (isNoShow) noshoCount++; else dismissCount++;
 
