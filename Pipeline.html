@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uncommitted Patient Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{--bg:#080c14;--surface:#0e1520;--surface2:#151e2e;--border:#1e2d42;--accent:#0ea5e9;--accent2:#38bdf8;--red:#ef4444;--green:#22c55e;--yellow:#facc15;--purple:#a855f7;--orange:#f97316;--text:#e2e8f0;--text-muted:#64748b;--text-dim:#94a3b8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:"Syne",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#facc15,#f59e0b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.brand-text h1{font-size:16px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;}
+.brand-text small{font-size:11px;color:var(--text-muted);font-family:"DM Mono",monospace;}
+.loc-filter{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.loc-filter button{background:transparent;border:none;color:var(--text-muted);padding:8px 14px;font-family:"Syne",sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.loc-filter button.active{background:var(--accent);color:#fff;}
+.loc-filter button:hover:not(.active){background:var(--surface2);color:var(--text);}
+.kpi-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:80px;display:flex;align-items:center;flex-shrink:0;}
+.kpi{display:flex;flex-direction:column;gap:3px;padding:0 28px 0 0;margin-right:28px;border-right:1px solid var(--border);}
+.kpi:last-child{border-right:none;}
+.kpi-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
+.kpi-val{font-size:24px;font-weight:800;line-height:1;}
+.blue{color:var(--accent2);}.green{color:var(--green);}.yellow{color:var(--yellow);}.purple{color:var(--purple);}.teal{color:#2dd4bf;}
+.main{flex:1;display:flex;flex-direction:column;padding:20px 24px;gap:20px;overflow-y:auto;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);font-family:"DM Mono",monospace;display:flex;justify-content:space-between;align-items:center;}
+.chart-wrap{padding:20px 24px;height:260px;position:relative;}
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;}
+tbody td{padding:10px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--surface2);}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.b-new{background:rgba(14,165,233,.15);color:var(--accent2);}
+.b-na{background:rgba(249,115,22,.15);color:var(--orange);}
+.b-cb{background:rgba(168,85,247,.15);color:var(--purple);}
+.b-dp{background:rgba(34,197,94,.15);color:var(--green);}
+.b-never{background:rgba(239,68,68,.15);color:var(--red);}
+.b-loc{background:rgba(56,189,248,.1);color:var(--accent2);}
+.pt-name{color:var(--text);font-weight:600;}
+.days-val{color:var(--yellow);font-weight:600;}
+#overlay{position:fixed;inset:0;background:rgba(8,12,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
+.spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-txt{font-family:"DM Mono",monospace;font-size:13px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+<div id="overlay"><div class="spin"></div><div class="load-txt">Loading pipeline data...</div></div>
+<header>
+  <div class="brand" onclick="window.location.href='index.html'">
+    <div class="brand-icon">🦷</div>
+    <div class="brand-text"><h1>SmileCrew</h1><small>Uncommitted Patient Pipeline</small></div>
+  </div>
+  <div class="loc-filter">
+    <button class="active" data-loc="all" onclick="setLoc('all')">All</button>
+    <button data-loc="clarkston" onclick="setLoc('clarkston')">Clarkston</button>
+    <button data-loc="buda" onclick="setLoc('buda')">Buda</button>
+    <button data-loc="leander" onclick="setLoc('leander')">Leander</button>
+    <button data-loc="lakeline" onclick="setLoc('lakeline')">Lakeline</button>
+    <button data-loc="marble falls" onclick="setLoc('marble falls')">Marble Falls</button>
+  </div>
+</header>
+<div class="kpi-bar">
+  <div class="kpi"><div class="kpi-lbl">Total in Pipeline</div><div class="kpi-val blue" id="k-total">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Pickup %</div><div class="kpi-val yellow" id="k-pickup">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Conversion %</div><div class="kpi-val green" id="k-conv">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Converted</div><div class="kpi-val purple" id="k-converted">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Contract Value Saved</div><div class="kpi-val teal" id="k-value">-</div></div>
+</div>
+<div class="main">
+  <div class="card">
+    <div class="card-head"><span>Patients by Stage</span></div>
+    <div class="chart-wrap"><canvas id="chart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <span>Patient List</span>
+      <span id="tbl-count" style="color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:0"></span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Name</th><th>Location</th><th>Current Stage</th>
+          <th>Previous Stage</th><th>Days in Stage</th>
+          <th>Last Moved</th><th>Created</th>
+        </tr></thead>
+        <tbody id="tbl-body"><tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+const CSV='https://script.google.com/macros/s/AKfycbzSPoO1GtEWcY4-R_nWajKa9T5peoMv4w8a4VRZp9mGriit9gcy-Hqx8r-4C4dYxBvobA/exec';
+const CONTRACT=6700;
+const COLORS=['#0ea5e9','#f97316','#a855f7','#22c55e','#ef4444'];
+const LABELS=['New Uncommitted','Called: No Answer','Call Back Requested','DP / Start Scheduled','Never Call Back'];
+let all=[],loc='all',myChart=null;
+
+function badgeClass(s){
+  if(!s)return'';s=s.toLowerCase();
+  if(s.includes('new'))return'b-new';
+  if(s.includes('no answer'))return'b-na';
+  if(s.includes('call back'))return'b-cb';
+  if(s.includes('dp')||s.includes('start'))return'b-dp';
+  if(s.includes('never'))return'b-never';
+  return'b-new';
+}
+
+function extractLoc(tags){
+  if(!tags)return'unknown';
+  const t=tags.toLowerCase();
+  const locs=['clarkston','buda','leander','lakeline','marble falls'];
+  for(const l of locs){if(t.includes(l))return l;}
+  return tags.split(',')[0].trim().toLowerCase();
+}
+
+function daysAgo(d){
+  if(!d)return NaN;
+  const dt=new Date(d);
+  if(isNaN(dt))return NaN;
+  return Math.floor((new Date()-dt)/864e5);
+}
+
+function fmtDate(d){
+  if(!d)return'-';
+  const dt=new Date(d);
+  if(isNaN(dt))return d;
+  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function filtered(){return loc==='all'?all:all.filter(p=>p.loc===loc);}
+
+function renderKPIs(pts){
+  const total=pts.length;
+  const pickup=pts.filter(p=>(p.cur||'').toLowerCase().includes('call back')).length;
+  const conv=pts.filter(p=>{const s=(p.cur||'').toLowerCase();return s.includes('dp')||s.includes('start');}).length;
+  document.getElementById('k-total').textContent=total;
+  document.getElementById('k-pickup').textContent=total>0?Math.round(pickup/total*100)+'%':'-';
+  document.getElementById('k-conv').textContent=total>0?Math.round(conv/total*100)+'%':'-';
+  document.getElementById('k-converted').textContent=conv;
+  document.getElementById('k-value').textContent='$'+(conv*CONTRACT).toLocaleString('en-US');
+}
+
+function renderChart(pts){
+  const kws=['new','no answer','call back','dp','never'];
+  const counts=kws.map(kw=>pts.filter(p=>{
+    const s=(p.cur||'').toLowerCase();
+    if(kw==='dp')return s.includes('dp')||s.includes('start');
+    if(kw==='new')return s.includes('new');
+    return s.includes(kw);
+  }).length);
+  if(myChart)myChart.destroy();
+  const ctx=document.getElementById('chart').getContext('2d');
+  myChart=new Chart(ctx,{type:'bar',data:{labels:LABELS,datasets:[{label:'Patients',data:counts,backgroundColor:COLORS.map(c=>c+'33'),borderColor:COLORS,borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',callbacks:{label:c=>' '+c.parsed.y+' patients'}}},scales:{x:{grid:{color:'#1e2d42'},ticks:{color:'#64748b',font:{family:'DM Mono',size:11}}},y:{grid:{color:'#1e2d42'},ticks:{color:'#64748b',font:{family:'DM Mono',size:11},stepSize:1},beginAtZero:true}}}});
+}
+
+function renderTable(pts){
+  const tbody=document.getElementById('tbl-body');
+  document.getElementById('tbl-count').textContent=pts.length+' patients';
+  if(!pts.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px">No patients found</td></tr>';return;}
+  const sorted=[...pts].sort((a,b)=>new Date(b.last)-new Date(a.last));
+  tbody.innerHTML=sorted.map(p=>{
+    const days=daysAgo(p.last);
+    return'<tr><td class="pt-name">'+p.name+'</td><td><span class="badge b-loc">'+p.loc+'</span></td><td><span class="badge '+badgeClass(p.cur)+'">'+p.cur+'</span></td><td>'+(p.prev?'<span class="badge '+badgeClass(p.prev)+'">'+p.prev+'</span>':'-')+'</td><td class="days-val">'+(isNaN(days)?'-':days+'d')+'</td><td>'+fmtDate(p.last)+'</td><td>'+fmtDate(p.created)+'</td></tr>';
+  }).join('');
+}
+
+function update(){const pts=filtered();renderKPIs(pts);renderChart(pts);renderTable(pts);}
+
+function setLoc(l){
+  loc=l;
+  document.querySelectorAll('.loc-filter button').forEach(b=>b.classList.toggle('active',b.dataset.loc===l));
+  update();
+}
+
+async function load(){
+  try{
+    const res=await fetch(CSV);
+    const txt=await res.text();
+    const parsed=Papa.parse(txt,{header:true,skipEmptyLines:true});
+    all=parsed.data.map(row=>{
+      const v=Object.values(row);
+      return{id:v[0]||'',name:v[1]||'',tags:v[2]||'',loc:extractLoc(v[2]||''),cur:v[3]||'',prev:v[4]||'',created:v[5]||'',last:v[6]||''};
+    }).filter(p=>p.name&&p.cur);
+    document.getElementById('overlay').style.display='none';
+    update();
+  }catch(e){
+    document.querySelector('.load-txt').textContent='Error loading data. Please refresh.';
+    console.error(e);
+  }
+}
+
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
