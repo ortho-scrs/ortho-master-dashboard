@@ -41,7 +41,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .kpi-lbl{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
 .kpi-val{font-size:22px;font-weight:800;line-height:1;color:#fff;}
 .kpi-val.blue{color:#60a5fa;}.kpi-val.green{color:#4ade80;}.kpi-val.red{color:#f87171;}
-.kpi-val.yellow{color:#fbbf24;font-size:15px;}.kpi-val.purple{color:#c084fc;}.kpi-val.teal{color:#2dd4bf;}
+.kpi-val.yellow{color:#fbbf24;font-size:15px;}.kpi-val.teal{color:#2dd4bf;}
 .main{flex:1;padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
 .section-divider{display:flex;align-items:center;gap:16px;}
 .section-label{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;white-space:nowrap;}
@@ -63,8 +63,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .legend-right{display:flex;gap:10px;font-size:11px;font-family:"DM Mono",monospace;flex-shrink:0;}
 .legend-count{color:#fff;font-weight:700;}
 .legend-pct{color:var(--text-muted);}
-
-/* SOURCE BREAKDOWN TABLE */
 .src-table-wrap{overflow-x:auto;}
 .src-table{width:100%;border-collapse:collapse;font-size:12px;}
 .src-table thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
@@ -85,15 +83,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .bar-cell{width:120px;}
 .mini-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
 .mini-bar{height:100%;border-radius:3px;}
-
-/* NS SOURCE TABLE */
 .ns-src-table{width:100%;border-collapse:collapse;font-size:12px;}
 .ns-src-table thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
 .ns-src-table thead th.num{text-align:center;}
 .ns-src-table tbody td{padding:11px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
 .ns-src-table tbody tr:last-child td{border-bottom:none;}
 .ns-src-table tbody tr:hover td{background:var(--surface2);}
-
 .section-sep{border:none;border-top:1px solid var(--border);}
 #overlay{position:fixed;inset:0;background:rgba(8,12,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
 .spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:#0ea5e9;border-radius:50%;animation:spin .8s linear infinite;}
@@ -132,15 +127,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 <div class="kpi-bar">
   <div class="kpi"><div class="kpi-lbl">Total Appointments</div><div class="kpi-val blue" id="k-total">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Show Rate</div><div class="kpi-val green" id="k-show">-</div></div>
-  <div class="kpi"><div class="kpi-lbl">No-Show Rate</div><div class="kpi-val red" id="k-noshow">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Top Source</div><div class="kpi-val yellow" id="k-topsource">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Started</div><div class="kpi-val teal" id="k-started">-</div></div>
-  <div class="kpi"><div class="kpi-lbl">Cancelled %</div><div class="kpi-val purple" id="k-cancelled">-</div></div>
 </div>
 
 <div class="main">
 
-  <!-- SECTION 1: ALL APPOINTMENTS -->
   <div class="section-divider">
     <div class="section-label">📊 All Appointments by Source</div>
     <div class="section-line"></div>
@@ -183,7 +175,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
   <hr class="section-sep">
 
-  <!-- SECTION 2: NO-SHOWS -->
   <div class="section-divider">
     <div class="section-label">🔴 No-Shows by Source</div>
     <div class="section-line"></div>
@@ -192,9 +183,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0 24px;height:72px;display:flex;align-items:center;">
     <div class="kpi"><div class="kpi-lbl">Total No-Shows</div><div class="kpi-val red" id="ns-total">-</div></div>
-    <div class="kpi"><div class="kpi-lbl">No-Show Rate</div><div class="kpi-val red" id="ns-rate">-</div></div>
     <div class="kpi"><div class="kpi-lbl">Top No-Show Source</div><div class="kpi-val yellow" id="ns-topsource">-</div></div>
-    <div class="kpi"><div class="kpi-lbl">Highest Rate Source</div><div class="kpi-val purple" id="ns-highrate" style="font-size:14px">-</div></div>
   </div>
 
   <div class="section-block">
@@ -265,8 +254,7 @@ function filterByPeriod(pts){
 }
 
 function getBase(){
-  let pts=all.filter(p=>p.loc===loc);
-  return filterByPeriod(pts);
+  return filterByPeriod(all.filter(p=>p.loc===loc));
 }
 
 function makePie(canvasId,legendId,data,colors,total,existing){
@@ -298,27 +286,20 @@ function renderAll(base){
   document.getElementById('all-count').textContent=total+' records';
 
   const shows=base.filter(p=>statusKey(p.status)==='started').length;
-  const noshows=base.filter(p=>statusKey(p.status)==='noshow').length;
-  const cancelled=base.filter(p=>statusKey(p.status)==='cancelled').length;
   const started=base.filter(p=>statusKey(p.status)==='started').length;
-
   const srcCount={};
   base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
   const topSrc=Object.entries(srcCount).sort((a,b)=>b[1]-a[1])[0];
 
   document.getElementById('k-total').textContent=total;
   document.getElementById('k-show').textContent=total>0?Math.round(shows/total*100)+'%':'-';
-  document.getElementById('k-noshow').textContent=total>0?Math.round(noshows/total*100)+'%':'-';
   document.getElementById('k-topsource').textContent=topSrc?topSrc[0]:'-';
   document.getElementById('k-started').textContent=started;
-  document.getElementById('k-cancelled').textContent=total>0?Math.round(cancelled/total*100)+'%':'-';
 
-  // Pie
   const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1]}));
   const colors=srcData.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]);
   allPieChart=makePie('allPie','all-pie-legend',srcData,colors,total,allPieChart);
 
-  // Source breakdown table
   const sources=Object.keys(srcCount).sort((a,b)=>srcCount[b]-srcCount[a]);
   const maxTotal=Math.max(...sources.map(s=>srcCount[s]),1);
   const tbody=document.getElementById('src-breakdown-body');
@@ -351,7 +332,6 @@ function renderNoShows(base){
   const nsTotal=noshows.length;
   document.getElementById('noshow-count').textContent=nsTotal+' no-shows';
   document.getElementById('ns-total').textContent=nsTotal;
-  document.getElementById('ns-rate').textContent=total>0?Math.round(nsTotal/total*100)+'%':'-';
 
   const srcCount={};
   noshows.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
@@ -361,16 +341,10 @@ function renderNoShows(base){
   const topNsSrc=Object.entries(srcCount).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('ns-topsource').textContent=topNsSrc?topNsSrc[0]:'-';
 
-  const rateEntries=Object.entries(srcCount).map(([src,nsCount])=>({src,rate:nsCount/(allSrcCount[src]||1)}));
-  const highRateSrc=rateEntries.sort((a,b)=>b.rate-a.rate)[0];
-  document.getElementById('ns-highrate').textContent=highRateSrc?`${highRateSrc.src} (${Math.round(highRateSrc.rate*100)}%)`:'-';
-
-  // Pie
   const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1]}));
   const colors=srcData.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]);
   nsPieChart=makePie('nsPie','ns-pie-legend',srcData,colors,nsTotal,nsPieChart);
 
-  // NS breakdown table
   const sources=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]);
   const maxNs=Math.max(...sources.map(s=>s[1]),1);
   const tbody=document.getElementById('ns-breakdown-body');
