@@ -6,6 +6,7 @@
 <title>NPE Sources Attribution</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root{
@@ -14,12 +15,12 @@
   --text-muted:#64748b;--text-dim:#94a3b8;
   --c-buda:#3b82f6;--c-leander:#f59e0b;--c-marble:#22c55e;
   --c-lakeline:#06b6d4;--c-clarkston:#a855f7;
+  --s-started:#22c55e;--s-noshow:#ef4444;--s-cancelled:#f97316;
+  --s-uncommitted:#0ea5e9;--s-obs:#a855f7;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
 body{font-family:"Syne",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
-
-/* HEADER */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:16px;}
 .brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:0;}
 .brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#facc15,#f59e0b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
@@ -29,86 +30,88 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .filter-group{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
 .filter-group button{background:transparent;border:none;color:var(--text-muted);padding:8px 13px;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
 .filter-group button:last-child{border-right:none;}
-.filter-group button:hover:not(.active){background:var(--surface2);color:#fff;}
-.filter-group button.pf-active{background:#0ea5e9;color:#fff;}
-.filter-group button.active-all{background:#334155;color:#fff;}
-.filter-group button.active-buda{background:var(--c-buda);color:#fff;}
-.filter-group button.active-leander{background:var(--c-leander);color:#fff;}
-.filter-group button.active-marble{background:var(--c-marble);color:#fff;}
-.filter-group button.active-lakeline{background:var(--c-lakeline);color:#fff;}
-.filter-group button.active-clarkston{background:var(--c-clarkston);color:#fff;}
-
-/* MAIN */
-.main{flex:1;padding:24px;display:flex;flex-direction:column;gap:24px;overflow-y:auto;}
-
-/* SECTION HEADERS */
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.section-title{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;display:flex;align-items:center;gap:10px;}
-.coming-soon-pill{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3);}
-.live-pill{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
-
-/* CARDS */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;}
-.card-head{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
-
-/* COMING SOON OVERLAY */
-.coming-soon-wrap{position:relative;}
-.coming-soon-overlay{position:absolute;inset:0;background:rgba(8,12,20,.75);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:10;backdrop-filter:blur(2px);}
-.coming-soon-overlay .icon{font-size:40px;}
-.coming-soon-overlay h3{font-size:20px;font-weight:800;color:#fff;letter-spacing:.04em;}
-.coming-soon-overlay p{font-size:12px;color:var(--text-muted);font-family:"DM Mono",monospace;text-align:center;max-width:280px;line-height:1.6;}
-
-/* PIE CHART SECTION */
-.pie-section{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-.pie-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.pie-card-title{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-family:"DM Mono",monospace;text-align:center;}
-.pie-wrap{width:180px;height:180px;position:relative;}
-.pie-legend{width:100%;display:flex;flex-direction:column;gap:6px;}
-.legend-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-family:"DM Mono",monospace;}
-.legend-label{display:flex;align-items:center;gap:6px;color:var(--text-dim);}
-.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.legend-pct{color:#fff;font-weight:700;}
-
-/* NO SHOW SECTION */
-.noshow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.source-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
-.source-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.source-name{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;}
-.source-count{font-size:22px;font-weight:800;color:var(--accent2);}
-.source-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px;}
-.source-bar{height:100%;border-radius:3px;background:var(--accent);}
-.source-meta{font-size:11px;color:var(--text-muted);font-family:"DM Mono",monospace;}
-
-/* COMING SOON PLACEHOLDER SOURCES */
-.placeholder-sources{display:flex;flex-direction:column;gap:8px;width:100%;}
-.placeholder-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:6px;border:1px solid var(--border);}
-.placeholder-label{font-size:12px;font-family:"DM Mono",monospace;color:var(--text-muted);}
-.placeholder-pct{font-size:12px;font-family:"DM Mono",monospace;color:var(--text-dim);font-weight:700;}
-
-/* COMING SOON INPUT AREA */
-.input-section{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;}
-.input-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
-.input-row{display:flex;gap:12px;flex-wrap:wrap;}
-.input-field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:"DM Mono",monospace;font-size:12px;color:#fff;outline:none;flex:1;min-width:160px;}
-.input-field::placeholder{color:var(--text-muted);}
-.input-field:focus{border-color:var(--accent);}
-.add-btn{background:var(--accent);border:none;border-radius:6px;padding:8px 16px;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:opacity .2s;}
-.add-btn:hover{opacity:.85;}
-.noshow-table-wrap{overflow-x:auto;}
-.noshow-table{width:100%;border-collapse:collapse;font-size:12px;}
-.noshow-table th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--bg);white-space:nowrap;border-bottom:1px solid var(--border);}
-.noshow-table td{padding:10px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
-.noshow-table tr:last-child td{border-bottom:none;}
-.noshow-table tr:hover td{background:var(--bg);}
-.del-btn{background:rgba(239,68,68,.15);border:none;border-radius:4px;padding:3px 8px;color:#f87171;font-size:10px;font-weight:800;font-family:"DM Mono",monospace;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;}
-.del-btn:hover{background:rgba(239,68,68,.3);}
-.pct-badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:800;background:rgba(14,165,233,.15);color:var(--accent2);}
-.empty-state{text-align:center;padding:32px;color:var(--text-muted);font-family:"DM Mono",monospace;font-size:12px;}
-.divider{border:none;border-top:1px solid var(--border);margin:8px 0;}
+.filter-group button:hover:not(.pf-active):not([class*="active-"]){background:var(--surface2);color:#fff;}
+.pf-active{background:#0ea5e9!important;color:#fff!important;}
+.active-all{background:#334155!important;color:#fff!important;}
+.active-buda{background:var(--c-buda)!important;color:#fff!important;}
+.active-leander{background:var(--c-leander)!important;color:#fff!important;}
+.active-marble{background:var(--c-marble)!important;color:#fff!important;}
+.active-lakeline{background:var(--c-lakeline)!important;color:#fff!important;}
+.active-clarkston{background:var(--c-clarkston)!important;color:#fff!important;}
+.kpi-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:88px;display:flex;align-items:center;flex-shrink:0;}
+.kpi{display:flex;flex-direction:column;gap:4px;padding:0 28px 0 0;margin-right:28px;border-right:1px solid var(--border);}
+.kpi:last-child{border-right:none;}
+.kpi-lbl{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
+.kpi-val{font-size:26px;font-weight:800;line-height:1;color:#fff;}
+.kpi-val.blue{color:#60a5fa;}
+.kpi-val.green{color:#4ade80;}
+.kpi-val.red{color:#f87171;}
+.kpi-val.yellow{color:#fbbf24;}
+.kpi-val.purple{color:#c084fc;}
+.main{flex:1;padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.card-head{padding:16px 20px;border-bottom:1px solid var(--border);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.chart-wrap{padding:20px 24px;height:300px;position:relative;}
+.pie-layout{display:flex;align-items:center;gap:24px;padding:20px 24px;height:300px;}
+.pie-canvas-wrap{width:220px;height:220px;flex-shrink:0;position:relative;}
+.pie-legend{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:260px;}
+.legend-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.legend-left{display:flex;align-items:center;gap:8px;font-size:12px;font-family:"DM Mono",monospace;color:var(--text-dim);}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.legend-right{display:flex;gap:12px;font-size:12px;font-family:"DM Mono",monospace;}
+.legend-count{color:#fff;font-weight:700;}
+.legend-pct{color:var(--text-muted);}
+.tbl-filters{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.filter-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;margin-right:4px;}
+.mini-filter{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-wrap:wrap;}
+.mini-filter button{background:transparent;border:none;color:var(--text-muted);padding:6px 12px;font-family:"DM Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
+.mini-filter button:last-child{border-right:none;}
+.mini-filter button:hover:not([class*="mf-active"]){background:var(--surface2);color:#fff;}
+.mf-active-all{background:#334155!important;color:#fff!important;}
+.mf-active-started{background:rgba(34,197,94,.3)!important;color:#4ade80!important;}
+.mf-active-noshow{background:rgba(239,68,68,.3)!important;color:#f87171!important;}
+.mf-active-cancelled{background:rgba(249,115,22,.3)!important;color:#fb923c!important;}
+.mf-active-uncommitted{background:rgba(14,165,233,.3)!important;color:#38bdf8!important;}
+.mf-active-obs{background:rgba(168,85,247,.3)!important;color:#c084fc!important;}
+.search-wrap{position:relative;display:flex;align-items:center;margin-left:auto;}
+.search-wrap input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px 7px 32px;font-family:"DM Mono",monospace;font-size:12px;color:#fff;outline:none;width:200px;transition:border-color .2s;}
+.search-wrap input::placeholder{color:var(--text-muted);}
+.search-wrap input:focus{border-color:#38bdf8;}
+.search-icon{position:absolute;left:10px;font-size:13px;color:var(--text-muted);pointer-events:none;}
+.search-clear{position:absolute;right:8px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;padding:0;display:none;}
+.search-clear.visible{display:block;}
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{padding:11px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
+thead th.sortable{cursor:pointer;user-select:none;}
+thead th.sortable:hover{color:#38bdf8;}
+thead th .sort-icon{margin-left:6px;font-size:10px;}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--surface2);}
+.badge{display:inline-block;padding:4px 9px;border-radius:4px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
+.b-started{background:rgba(34,197,94,.18);color:#4ade80;}
+.b-noshow{background:rgba(239,68,68,.18);color:#f87171;}
+.b-cancelled{background:rgba(249,115,22,.18);color:#fb923c;}
+.b-uncommitted{background:rgba(14,165,233,.18);color:#38bdf8;}
+.b-obs{background:rgba(168,85,247,.18);color:#c084fc;}
+.b-loc-buda{background:rgba(59,130,246,.18);color:#60a5fa;}
+.b-loc-leander{background:rgba(245,158,11,.18);color:#fbbf24;}
+.b-loc-marble{background:rgba(34,197,94,.18);color:#4ade80;}
+.b-loc-lakeline{background:rgba(6,182,212,.18);color:#22d3ee;}
+.b-loc-clarkston{background:rgba(168,85,247,.18);color:#c084fc;}
+.b-loc-unknown{background:rgba(100,116,139,.18);color:#94a3b8;}
+.pt-name{color:#fff;font-weight:700;}
+.highlight{background:rgba(56,189,248,.25);border-radius:2px;color:#fff;}
+#overlay{position:fixed;inset:0;background:rgba(8,12,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
+.spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:#0ea5e9;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-txt{font-family:"DM Mono",monospace;font-size:13px;color:var(--text-muted);}
 </style>
 </head>
 <body>
-
+<div id="overlay"><div class="spin"></div><div class="load-txt">Loading NPE data...</div></div>
 <header>
   <div class="brand" onclick="window.location.href='index.html'">
     <div class="brand-icon">🦷</div>
@@ -126,216 +129,273 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
     </div>
     <div class="filter-group">
       <button class="active-all" data-loc="all" onclick="setLoc('all')">All</button>
-      <button data-loc="clarkston" onclick="setLoc('clarkston')">Clarkston</button>
-      <button data-loc="buda" onclick="setLoc('buda')">Buda</button>
-      <button data-loc="leander" onclick="setLoc('leander')">Leander</button>
-      <button data-loc="lakeline" onclick="setLoc('lakeline')">Lakeline</button>
-      <button data-loc="marble falls" onclick="setLoc('marble falls')">Marble Falls</button>
+      <button data-loc="Clarkston" onclick="setLoc('Clarkston')">Clarkston</button>
+      <button data-loc="Buda" onclick="setLoc('Buda')">Buda</button>
+      <button data-loc="Leander" onclick="setLoc('Leander')">Leander</button>
+      <button data-loc="Lakeline" onclick="setLoc('Lakeline')">Lakeline</button>
+      <button data-loc="Marble Falls" onclick="setLoc('Marble Falls')">Marble Falls</button>
     </div>
   </div>
 </header>
-
+<div class="kpi-bar">
+  <div class="kpi"><div class="kpi-lbl">Total Appointments</div><div class="kpi-val blue" id="k-total">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Show Rate</div><div class="kpi-val green" id="k-show">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">No-Show Rate</div><div class="kpi-val red" id="k-noshow">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Top Source</div><div class="kpi-val yellow" id="k-topsource" style="font-size:16px">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Cancelled %</div><div class="kpi-val purple" id="k-cancelled">-</div></div>
+</div>
 <div class="main">
-
-  <!-- SECTION 1: ALL APPOINTMENTS BY SOURCE -->
-  <div>
-    <div class="section-head">
-      <div class="section-title">
-        📊 All Appointments by Source
-        <span class="coming-soon-pill">Coming Soon</span>
-      </div>
-    </div>
-    <div class="card coming-soon-wrap">
-      <div class="coming-soon-overlay">
-        <div class="icon">🔌</div>
-        <h3>Data Integration Pending</h3>
-        <p>Appointment source data will be connected here. Charts will populate automatically once the data pipeline is live.</p>
-      </div>
-      <!-- Placeholder pie charts (blurred behind overlay) -->
-      <div class="pie-section">
-        <div class="pie-card">
-          <div class="pie-card-title">All Locations</div>
-          <div class="pie-wrap"><canvas id="pie1"></canvas></div>
-          <div class="placeholder-sources">
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#0ea5e9"></span>Google Ads</span><span class="legend-pct">34%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#a855f7"></span>Organic Search</span><span class="legend-pct">28%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#22c55e"></span>Referral</span><span class="legend-pct">19%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#f59e0b"></span>Social Media</span><span class="legend-pct">12%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#ef4444"></span>Other</span><span class="legend-pct">7%</span></div>
-          </div>
-        </div>
-        <div class="pie-card">
-          <div class="pie-card-title">New Patients</div>
-          <div class="pie-wrap"><canvas id="pie2"></canvas></div>
-          <div class="placeholder-sources">
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#0ea5e9"></span>Google Ads</span><span class="legend-pct">41%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#a855f7"></span>Organic Search</span><span class="legend-pct">22%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#22c55e"></span>Referral</span><span class="legend-pct">18%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#f59e0b"></span>Social Media</span><span class="legend-pct">14%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#ef4444"></span>Other</span><span class="legend-pct">5%</span></div>
-          </div>
-        </div>
-        <div class="pie-card">
-          <div class="pie-card-title">Returning Patients</div>
-          <div class="pie-wrap"><canvas id="pie3"></canvas></div>
-          <div class="placeholder-sources">
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#0ea5e9"></span>Google Ads</span><span class="legend-pct">22%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#a855f7"></span>Organic Search</span><span class="legend-pct">35%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#22c55e"></span>Referral</span><span class="legend-pct">24%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#f59e0b"></span>Social Media</span><span class="legend-pct">10%</span></div>
-            <div class="placeholder-row"><span class="legend-label"><span class="legend-dot" style="background:#ef4444"></span>Other</span><span class="legend-pct">9%</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 2: NO-SHOW DATA BY SOURCE -->
-  <div>
-    <div class="section-head">
-      <div class="section-title">
-        🔴 No-Show Data by Source
-        <span class="live-pill">Live</span>
+  <div class="charts-row">
+    <div class="card">
+      <div class="card-head"><span>Appointments by Source</span></div>
+      <div class="pie-layout">
+        <div class="pie-canvas-wrap"><canvas id="pieChart"></canvas></div>
+        <div class="pie-legend" id="pie-legend"></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <span>Add No-Show Source Entry</span>
-        <span id="noshow-period-label" style="color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:0;text-transform:none;font-family:'DM Mono',monospace"></span>
-      </div>
-      <div class="input-section">
-        <div class="input-label">Add Entry</div>
-        <div class="input-row">
-          <input class="input-field" id="inp-source" placeholder="Source (e.g. Google Ads)">
-          <input class="input-field" id="inp-count" placeholder="No-Show Count" type="number" min="0">
-          <input class="input-field" id="inp-total" placeholder="Total from Source" type="number" min="0">
-          <input class="input-field" id="inp-loc" placeholder="Location (e.g. Buda)">
-          <button class="add-btn" onclick="addEntry()">+ Add</button>
-        </div>
-      </div>
-      <hr class="divider">
-      <div class="noshow-table-wrap">
-        <table class="noshow-table">
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Location</th>
-              <th>No-Shows</th>
-              <th>Total Apts</th>
-              <th>No-Show %</th>
-              <th>Period</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="noshow-tbody">
-            <tr><td colspan="7" class="empty-state">No entries yet — add your first no-show source above</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="card-head"><span>Status Breakdown by Source</span></div>
+      <div class="chart-wrap"><canvas id="barChart"></canvas></div>
     </div>
   </div>
-
+  <div class="card">
+    <div class="card-head">
+      <span>Appointment Records</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="tbl-count" style="color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:0;text-transform:none"></span>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search..." oninput="onSearch(this.value)">
+          <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+        </div>
+      </div>
+    </div>
+    <div class="tbl-filters">
+      <span class="filter-label">Status:</span>
+      <div class="mini-filter">
+        <button class="mf-active-all" data-status="all" onclick="setStatus('all')">All</button>
+        <button data-status="started" onclick="setStatus('started')">Started</button>
+        <button data-status="noshow" onclick="setStatus('noshow')">No-Show</button>
+        <button data-status="cancelled" onclick="setStatus('cancelled')">Cancelled</button>
+        <button data-status="uncommitted" onclick="setStatus('uncommitted')">Uncommitted</button>
+        <button data-status="obs" onclick="setStatus('obs')">OBS</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Patient</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th class="sortable" id="th-date" onclick="toggleDateSort()">Date<span class="sort-icon" id="date-sort-icon">⇅</span></th>
+          <th>Month/Year</th>
+        </tr></thead>
+        <tbody id="tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
-
 <script>
-let period='annual', loc='all';
-let entries = JSON.parse(localStorage.getItem('npe_noshow') || '[]');
+const CSV='https://script.google.com/macros/s/AKfycbwitgD7_9mXTrw9RIj6PLwqelo7qVwakzJX32LHk-VPPQyBRHORR0Svd0wfg0iPcCyR/exec';
+const SOURCE_COLORS=['#0ea5e9','#a855f7','#22c55e','#f59e0b','#ef4444','#ec4899','#f97316','#06b6d4','#84cc16','#6366f1'];
+let all=[],period='annual',loc='all',statusFilter='all',dateSort='desc',searchQuery='';
+let pieChart=null,barChart=null;
 
-const PIE_COLORS=['#0ea5e9','#a855f7','#22c55e','#f59e0b','#ef4444'];
-const PIE_DATA_1=[34,28,19,12,7];
-const PIE_DATA_2=[41,22,18,14,5];
-const PIE_DATA_3=[22,35,24,10,9];
+function statusKey(s){
+  if(!s)return'unknown';
+  const v=s.toLowerCase();
+  if(v.includes('started'))return'started';
+  if(v.includes('no-show')||v.includes('noshow')||v.includes('no show'))return'noshow';
+  if(v.includes('cancelled')||v.includes('canceled'))return'cancelled';
+  if(v.includes('uncommitted'))return'uncommitted';
+  if(v.includes('obs'))return'obs';
+  return'unknown';
+}
 
-function makePie(id, data){
-  const ctx=document.getElementById(id).getContext('2d');
-  new Chart(ctx,{
-    type:'doughnut',
-    data:{
-      datasets:[{data,backgroundColor:PIE_COLORS.map(c=>c+'cc'),borderColor:PIE_COLORS,borderWidth:2}]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:true,
-      cutout:'65%',
-      plugins:{legend:{display:false},tooltip:{enabled:false}}
-    }
+function statusClass(s){
+  const k=statusKey(s);
+  const map={started:'b-started',noshow:'b-noshow',cancelled:'b-cancelled',uncommitted:'b-uncommitted',obs:'b-obs'};
+  return map[k]||'b-uncommitted';
+}
+
+function locClass(l){
+  if(!l)return'b-loc-unknown';
+  const v=l.toLowerCase();
+  if(v.includes('buda'))return'b-loc-buda';
+  if(v.includes('leander'))return'b-loc-leander';
+  if(v.includes('marble'))return'b-loc-marble';
+  if(v.includes('lakeline'))return'b-loc-lakeline';
+  if(v.includes('clarkston'))return'b-loc-clarkston';
+  return'b-loc-unknown';
+}
+
+function fmtDate(d){
+  if(!d)return'-';
+  const dt=new Date(d);
+  if(isNaN(dt))return d;
+  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function highlight(text,q){
+  if(!q||!text)return text;
+  const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return String(text).replace(new RegExp('('+e+')','gi'),'<mark class="highlight">$1</mark>');
+}
+
+function filterByPeriod(pts){
+  const now=new Date();
+  const lm=new Date(now.getFullYear(),now.getMonth()-1,1);
+  return pts.filter(p=>{
+    const d=new Date(p.date);
+    if(isNaN(d))return true;
+    if(period==='lastmonth')return d.getFullYear()===lm.getFullYear()&&d.getMonth()===lm.getMonth();
+    if(period==='q1')return d.getFullYear()===now.getFullYear()&&d.getMonth()<=2;
+    if(period==='q2')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=3&&d.getMonth()<=5;
+    if(period==='q3')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=6&&d.getMonth()<=8;
+    if(period==='q4')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=9;
+    if(period==='annual')return d.getFullYear()===now.getFullYear();
+    return true;
   });
 }
 
-function getPeriodLabel(){
-  const now=new Date();
-  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const lastMonth=new Date(now.getFullYear(),now.getMonth()-1,1);
-  if(period==='lastmonth')return`${months[lastMonth.getMonth()]} ${lastMonth.getFullYear()}`;
-  if(period==='q1')return`Q1 ${now.getFullYear()}`;
-  if(period==='q2')return`Q2 ${now.getFullYear()}`;
-  if(period==='q3')return`Q3 ${now.getFullYear()}`;
-  if(period==='q4')return`Q4 ${now.getFullYear()}`;
-  if(period==='annual')return`${now.getFullYear()}`;
-  return'All Time';
+function getBase(){
+  let pts=loc==='all'?all:all.filter(p=>p.loc===loc);
+  return filterByPeriod(pts);
 }
 
 function getFiltered(){
-  return entries.filter(e=>{
-    const locMatch=loc==='all'||e.loc.toLowerCase()===loc.toLowerCase();
-    const periodMatch=e.period===period;
-    return locMatch&&periodMatch;
+  let pts=getBase();
+  if(statusFilter!=='all')pts=pts.filter(p=>statusKey(p.status)===statusFilter);
+  if(searchQuery){
+    const q=searchQuery.toLowerCase();
+    pts=pts.filter(p=>
+      (p.name||'').toLowerCase().includes(q)||
+      (p.source||'').toLowerCase().includes(q)||
+      (p.status||'').toLowerCase().includes(q)||
+      (p.loc||'').toLowerCase().includes(q)
+    );
+  }
+  return pts;
+}
+
+function renderKPIs(base){
+  const total=base.length;
+  const shows=base.filter(p=>statusKey(p.status)==='started').length;
+  const noshows=base.filter(p=>statusKey(p.status)==='noshow').length;
+  const cancelled=base.filter(p=>statusKey(p.status)==='cancelled').length;
+  // Top source
+  const srcCount={};
+  base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
+  const topSrc=Object.entries(srcCount).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('k-total').textContent=total;
+  document.getElementById('k-show').textContent=total>0?Math.round(shows/total*100)+'%':'-';
+  document.getElementById('k-noshow').textContent=total>0?Math.round(noshows/total*100)+'%':'-';
+  document.getElementById('k-topsource').textContent=topSrc?topSrc[0]:'-';
+  document.getElementById('k-cancelled').textContent=total>0?Math.round(cancelled/total*100)+'%':'-';
+}
+
+function renderPie(base){
+  const srcCount={};
+  base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
+  const sorted=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]);
+  const total=base.length;
+  const labels=sorted.map(s=>s[0]);
+  const data=sorted.map(s=>s[1]);
+  const colors=labels.map((_,i)=>SOURCE_COLORS[i%SOURCE_COLORS.length]);
+
+  if(pieChart)pieChart.destroy();
+  const ctx=document.getElementById('pieChart').getContext('2d');
+  pieChart=new Chart(ctx,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors.map(c=>c+'cc'),borderColor:colors,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:true,cutout:'60%',
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',callbacks:{label:c=>` ${c.parsed} (${Math.round(c.parsed/total*100)}%)`}}}}
+  });
+
+  const legend=document.getElementById('pie-legend');
+  legend.innerHTML=sorted.map((s,i)=>`
+    <div class="legend-row">
+      <div class="legend-left">
+        <div class="legend-dot" style="background:${colors[i]}"></div>
+        <span>${s[0]}</span>
+      </div>
+      <div class="legend-right">
+        <span class="legend-count">${s[1]}</span>
+        <span class="legend-pct">${Math.round(s[1]/total*100)}%</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBar(base){
+  const srcCount={};
+  base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
+  const sources=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).slice(0,8).map(s=>s[0]);
+  const statuses=['started','noshow','cancelled','uncommitted','obs'];
+  const statusLabels=['Started','No-Show','Cancelled','Uncommitted','OBS'];
+  const statusColors=['#22c55e','#ef4444','#f97316','#0ea5e9','#a855f7'];
+
+  const datasets=statuses.map((sk,i)=>({
+    label:statusLabels[i],
+    data:sources.map(src=>base.filter(p=>p.source===src&&statusKey(p.status)===sk).length),
+    backgroundColor:statusColors[i]+'55',
+    borderColor:statusColors[i],
+    borderWidth:2,
+    borderRadius:4
+  }));
+
+  if(barChart)barChart.destroy();
+  const ctx=document.getElementById('barChart').getContext('2d');
+  barChart=new Chart(ctx,{
+    type:'bar',
+    data:{labels:sources,datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{family:'DM Mono',size:11},boxWidth:12}},
+        tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8'}},
+      scales:{
+        x:{stacked:false,grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},maxRotation:25}},
+        y:{stacked:false,grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11},stepSize:1},beginAtZero:true}
+      }}
   });
 }
 
-function renderTable(){
-  const tbody=document.getElementById('noshow-tbody');
+function renderTable(pts){
+  const tbody=document.getElementById('tbl-body');
+  let sorted=[...pts];
+  if(dateSort==='asc')sorted.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  else sorted.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  document.getElementById('tbl-count').textContent=sorted.length+' records';
+  if(!sorted.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">'+(searchQuery?'No records match "'+searchQuery+'"':'No records found')+'</td></tr>';
+    return;
+  }
+  const q=searchQuery;
+  tbody.innerHTML=sorted.map(p=>`
+    <tr>
+      <td class="pt-name">${q?highlight(p.name,q):p.name}</td>
+      <td>${q?highlight(p.source,q):p.source}</td>
+      <td><span class="badge ${statusClass(p.status)}">${p.status}</span></td>
+      <td><span class="badge ${locClass(p.loc)}">${p.loc}</span></td>
+      <td>${fmtDate(p.date)}</td>
+      <td>${p.monthYear||'-'}</td>
+    </tr>
+  `).join('');
+}
+
+function update(){
+  const base=getBase();
   const filtered=getFiltered();
-  document.getElementById('noshow-period-label').textContent=getPeriodLabel()+' — '+filtered.length+' entries';
-  if(!filtered.length){
-    tbody.innerHTML='<tr><td colspan="7" class="empty-state">No entries for this period and location</td></tr>';
-    return;
-  }
-  tbody.innerHTML=filtered.map((e,i)=>{
-    const pct=e.total>0?((e.count/e.total)*100).toFixed(1)+'%':'—';
-    const barW=e.total>0?Math.round((e.count/e.total)*100):0;
-    const idx=entries.indexOf(e);
-    return`<tr>
-      <td style="color:#fff;font-weight:700">${e.source}</td>
-      <td>${e.loc||'—'}</td>
-      <td style="color:#f87171;font-weight:700">${e.count}</td>
-      <td>${e.total}</td>
-      <td><span class="pct-badge">${pct}</span></td>
-      <td>${e.period==='alltime'?'All Time':e.period}</td>
-      <td><button class="del-btn" onclick="deleteEntry(${idx})">Remove</button></td>
-    </tr>`;
-  }).join('');
-}
-
-function addEntry(){
-  const source=document.getElementById('inp-source').value.trim();
-  const count=parseInt(document.getElementById('inp-count').value);
-  const total=parseInt(document.getElementById('inp-total').value);
-  const entryLoc=document.getElementById('inp-loc').value.trim();
-  if(!source||isNaN(count)||isNaN(total)){
-    alert('Please fill in Source, No-Show Count, and Total from Source.');
-    return;
-  }
-  entries.push({source,count,total,loc:entryLoc||'All',period});
-  localStorage.setItem('npe_noshow',JSON.stringify(entries));
-  document.getElementById('inp-source').value='';
-  document.getElementById('inp-count').value='';
-  document.getElementById('inp-total').value='';
-  document.getElementById('inp-loc').value='';
-  renderTable();
-}
-
-function deleteEntry(idx){
-  entries.splice(idx,1);
-  localStorage.setItem('npe_noshow',JSON.stringify(entries));
-  renderTable();
+  renderKPIs(base);
+  renderPie(base);
+  renderBar(base);
+  renderTable(filtered);
 }
 
 function setPeriod(p){
   period=p;
-  document.querySelectorAll('.filter-group button[data-period]').forEach(b=>{
-    b.classList.toggle('pf-active',b.dataset.period===p);
-  });
-  renderTable();
+  document.querySelectorAll('.filter-group button[data-period]').forEach(b=>b.classList.toggle('pf-active',b.dataset.period===p));
+  update();
 }
 
 function setLoc(l){
@@ -343,18 +403,60 @@ function setLoc(l){
   document.querySelectorAll('.filter-group button[data-loc]').forEach(b=>{
     b.className=b.className.replace(/active-\S+/g,'').trim();
     if(b.dataset.loc===l){
-      const map={'all':'active-all','buda':'active-buda','leander':'active-leander','marble falls':'active-marble','lakeline':'active-lakeline','clarkston':'active-clarkston'};
+      const map={'all':'active-all','Buda':'active-buda','Leander':'active-leander','Marble Falls':'active-marble','Lakeline':'active-lakeline','Clarkston':'active-clarkston'};
       b.classList.add(map[l]||'active-all');
     }
   });
-  renderTable();
+  update();
 }
 
-// Init
-makePie('pie1',PIE_DATA_1);
-makePie('pie2',PIE_DATA_2);
-makePie('pie3',PIE_DATA_3);
-renderTable();
+function setStatus(s){
+  statusFilter=s;
+  document.querySelectorAll('.mini-filter button').forEach(b=>{
+    b.className='';
+    if(b.dataset.status===s)b.className='mf-active-'+s;
+  });
+  renderTable(getFiltered());
+}
+
+function toggleDateSort(){
+  dateSort=dateSort==='desc'?'asc':'desc';
+  document.getElementById('date-sort-icon').textContent=dateSort==='asc'?'▲':'▼';
+  renderTable(getFiltered());
+}
+
+function onSearch(val){
+  searchQuery=val.trim();
+  document.getElementById('search-clear').classList.toggle('visible',searchQuery.length>0);
+  renderTable(getFiltered());
+}
+
+function clearSearch(){
+  searchQuery='';
+  document.getElementById('search-input').value='';
+  document.getElementById('search-clear').classList.remove('visible');
+  renderTable(getFiltered());
+}
+
+async function load(){
+  try{
+    const res=await fetch(CSV);
+    const txt=await res.text();
+    const parsed=Papa.parse(txt,{header:true,skipEmptyLines:true});
+    all=parsed.data.map(row=>{
+      const v=Object.values(row);
+      return{name:v[0]||'',source:v[1]||'',status:v[2]||'',loc:v[3]||'',date:v[4]||'',monthYear:v[5]||''};
+    }).filter(p=>p.name||p.source);
+    document.getElementById('overlay').style.display='none';
+    update();
+  }catch(e){
+    document.querySelector('.load-txt').textContent='Error loading data. Please refresh.';
+    console.error(e);
+  }
+}
+
+load();
+setInterval(load,60000);
 </script>
 </body>
 </html>
