@@ -30,14 +30,11 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .filter-group button:last-child{border-right:none;}
 .filter-group button:hover:not(.pf-active):not([class*="active-"]){background:var(--surface2);color:#fff;}
 .pf-active{background:#0ea5e9!important;color:#fff!important;}
-.active-all{background:#334155!important;color:#fff!important;}
 .active-buda{background:var(--c-buda)!important;color:#fff!important;}
 .active-leander{background:var(--c-leander)!important;color:#fff!important;}
 .active-marble{background:var(--c-marble)!important;color:#fff!important;}
 .active-lakeline{background:var(--c-lakeline)!important;color:#fff!important;}
 .active-clarkston{background:var(--c-clarkston)!important;color:#fff!important;}
-
-/* KPI BARS */
 .kpi-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:80px;display:flex;align-items:center;flex-shrink:0;}
 .kpi{display:flex;flex-direction:column;gap:4px;padding:0 24px 0 0;margin-right:24px;border-right:1px solid var(--border);}
 .kpi:last-child{border-right:none;}
@@ -45,21 +42,17 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .kpi-val{font-size:22px;font-weight:800;line-height:1;color:#fff;}
 .kpi-val.blue{color:#60a5fa;}.kpi-val.green{color:#4ade80;}.kpi-val.red{color:#f87171;}
 .kpi-val.yellow{color:#fbbf24;font-size:15px;}.kpi-val.purple{color:#c084fc;}.kpi-val.teal{color:#2dd4bf;}
-
-/* SECTION DIVIDER */
-.section-divider{display:flex;align-items:center;gap:16px;padding:24px 24px 0;}
+.main{flex:1;padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+.section-divider{display:flex;align-items:center;gap:16px;}
 .section-label{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;white-space:nowrap;}
 .section-line{flex:1;height:1px;background:var(--border);}
 .section-badge{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;}
 .badge-all{background:rgba(56,189,248,.15);color:var(--accent2);}
 .badge-noshow{background:rgba(239,68,68,.15);color:#f87171;}
-
-/* MAIN */
-.main{flex:1;padding:0 24px 24px;display:flex;flex-direction:column;gap:0;overflow-y:auto;}
-.section-block{display:flex;flex-direction:column;gap:16px;padding:20px 0;}
-.charts-row{display:grid;grid-template-columns:380px 1fr;gap:16px;}
+.section-block{display:flex;flex-direction:column;gap:16px;}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;}
 .card-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;display:flex;justify-content:space-between;align-items:center;}
+.two-col{display:grid;grid-template-columns:360px 1fr;gap:16px;}
 .pie-layout{display:flex;align-items:center;gap:20px;padding:16px 20px;}
 .pie-canvas-wrap{width:180px;height:180px;flex-shrink:0;}
 .pie-legend{flex:1;display:flex;flex-direction:column;gap:7px;overflow-y:auto;max-height:220px;}
@@ -70,51 +63,38 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .legend-right{display:flex;gap:10px;font-size:11px;font-family:"DM Mono",monospace;flex-shrink:0;}
 .legend-count{color:#fff;font-weight:700;}
 .legend-pct{color:var(--text-muted);}
-.chart-wrap{padding:16px 20px;height:260px;position:relative;}
 
-/* TABLE */
-.tbl-filters{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.filter-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
-.mini-filter{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-.mini-filter button{background:transparent;border:none;color:var(--text-muted);padding:6px 11px;font-family:"DM Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;border-right:1px solid var(--border);}
-.mini-filter button:last-child{border-right:none;}
-.mini-filter button:hover:not([class*="mf-"]){background:var(--surface2);color:#fff;}
-.mf-all{background:#334155!important;color:#fff!important;}
-.mf-started{background:rgba(34,197,94,.25)!important;color:#4ade80!important;}
-.mf-noshow{background:rgba(239,68,68,.25)!important;color:#f87171!important;}
-.mf-cancelled{background:rgba(249,115,22,.25)!important;color:#fb923c!important;}
-.mf-uncommitted{background:rgba(14,165,233,.25)!important;color:#38bdf8!important;}
-.mf-obs{background:rgba(168,85,247,.25)!important;color:#c084fc!important;}
-.search-wrap{position:relative;display:flex;align-items:center;margin-left:auto;}
-.search-wrap input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 28px 7px 30px;font-family:"DM Mono",monospace;font-size:12px;color:#fff;outline:none;width:200px;transition:border-color .2s;}
-.search-wrap input::placeholder{color:var(--text-muted);}
-.search-wrap input:focus{border-color:#38bdf8;}
-.search-icon{position:absolute;left:10px;font-size:13px;color:var(--text-muted);pointer-events:none;}
-.search-clear{position:absolute;right:8px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;padding:0;display:none;}
-.search-clear.visible{display:block;}
-.tbl-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;}
-thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
-thead th.sortable{cursor:pointer;user-select:none;}
-thead th.sortable:hover{color:#38bdf8;}
-tbody td{padding:10px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
-tbody tr:last-child td{border-bottom:none;}
-tbody tr:hover td{background:var(--surface2);}
-.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
-.b-started{background:rgba(34,197,94,.18);color:#4ade80;}
-.b-noshow{background:rgba(239,68,68,.18);color:#f87171;}
-.b-cancelled{background:rgba(249,115,22,.18);color:#fb923c;}
-.b-uncommitted{background:rgba(14,165,233,.18);color:#38bdf8;}
-.b-obs{background:rgba(168,85,247,.18);color:#c084fc;}
-.b-loc-buda{background:rgba(59,130,246,.18);color:#60a5fa;}
-.b-loc-leander{background:rgba(245,158,11,.18);color:#fbbf24;}
-.b-loc-marble{background:rgba(34,197,94,.18);color:#4ade80;}
-.b-loc-lakeline{background:rgba(6,182,212,.18);color:#22d3ee;}
-.b-loc-clarkston{background:rgba(168,85,247,.18);color:#c084fc;}
-.b-loc-unknown{background:rgba(100,116,139,.18);color:#94a3b8;}
-.pt-name{color:#fff;font-weight:700;}
-.highlight{background:rgba(56,189,248,.25);border-radius:2px;color:#fff;}
-.section-sep{border:none;border-top:1px solid var(--border);margin:0 0 0 0;}
+/* SOURCE BREAKDOWN TABLE */
+.src-table-wrap{overflow-x:auto;}
+.src-table{width:100%;border-collapse:collapse;font-size:12px;}
+.src-table thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
+.src-table thead th.num{text-align:center;}
+.src-table tbody td{padding:11px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
+.src-table tbody tr:last-child td{border-bottom:none;}
+.src-table tbody tr:hover td{background:var(--surface2);}
+.src-name{color:#fff;font-weight:700;font-size:13px;}
+.num-cell{text-align:center;}
+.num-started{color:#4ade80;font-weight:800;font-size:14px;}
+.num-noshow{color:#f87171;font-weight:800;font-size:14px;}
+.num-showed{color:#60a5fa;font-weight:800;font-size:14px;}
+.rate-cell{text-align:center;}
+.rate-badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:800;}
+.rate-low{background:rgba(34,197,94,.18);color:#4ade80;}
+.rate-mid{background:rgba(245,158,11,.18);color:#fbbf24;}
+.rate-high{background:rgba(239,68,68,.18);color:#f87171;}
+.bar-cell{width:120px;}
+.mini-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.mini-bar{height:100%;border-radius:3px;}
+
+/* NS SOURCE TABLE */
+.ns-src-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ns-src-table thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;background:var(--surface2);white-space:nowrap;border-bottom:1px solid var(--border);}
+.ns-src-table thead th.num{text-align:center;}
+.ns-src-table tbody td{padding:11px 16px;border-bottom:1px solid var(--border);font-family:"DM Mono",monospace;color:var(--text-dim);white-space:nowrap;}
+.ns-src-table tbody tr:last-child td{border-bottom:none;}
+.ns-src-table tbody tr:hover td{background:var(--surface2);}
+
+.section-sep{border:none;border-top:1px solid var(--border);}
 #overlay{position:fixed;inset:0;background:rgba(8,12,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
 .spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:#0ea5e9;border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -140,8 +120,7 @@ tbody tr:hover td{background:var(--surface2);}
       <button data-period="alltime" onclick="setPeriod('alltime')">All Time</button>
     </div>
     <div class="filter-group">
-      <button class="active-all" data-loc="all" onclick="setLoc('all')">All</button>
-      <button data-loc="Clarkston" onclick="setLoc('Clarkston')">Clarkston</button>
+      <button class="active-clarkston" data-loc="Clarkston" onclick="setLoc('Clarkston')">Clarkston</button>
       <button data-loc="Buda" onclick="setLoc('Buda')">Buda</button>
       <button data-loc="Leander" onclick="setLoc('Leander')">Leander</button>
       <button data-loc="Lakeline" onclick="setLoc('Lakeline')">Lakeline</button>
@@ -150,14 +129,13 @@ tbody tr:hover td{background:var(--surface2);}
   </div>
 </header>
 
-<!-- ALL APPOINTMENTS KPI BAR -->
 <div class="kpi-bar">
   <div class="kpi"><div class="kpi-lbl">Total Appointments</div><div class="kpi-val blue" id="k-total">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Show Rate</div><div class="kpi-val green" id="k-show">-</div></div>
   <div class="kpi"><div class="kpi-lbl">No-Show Rate</div><div class="kpi-val red" id="k-noshow">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Top Source</div><div class="kpi-val yellow" id="k-topsource">-</div></div>
-  <div class="kpi"><div class="kpi-lbl">Cancelled %</div><div class="kpi-val purple" id="k-cancelled">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Started</div><div class="kpi-val teal" id="k-started">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Cancelled %</div><div class="kpi-val purple" id="k-cancelled">-</div></div>
 </div>
 
 <div class="main">
@@ -170,7 +148,7 @@ tbody tr:hover td{background:var(--surface2);}
   </div>
 
   <div class="section-block">
-    <div class="charts-row">
+    <div class="two-col">
       <div class="card">
         <div class="card-head"><span>By Source</span></div>
         <div class="pie-layout">
@@ -179,42 +157,26 @@ tbody tr:hover td{background:var(--surface2);}
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><span>Status Breakdown by Source</span></div>
-        <div class="chart-wrap"><canvas id="allBar"></canvas></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <span>All Appointment Records</span>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span id="all-tbl-count" style="color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:0;text-transform:none"></span>
-          <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="all-search" placeholder="Search..." oninput="onSearch('all',this.value)">
-            <button class="search-clear" id="all-search-clear" onclick="clearSearch('all')">✕</button>
-          </div>
+        <div class="card-head">
+          <span>Source Breakdown</span>
+          <span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">Showed / No-Showed / Started</span>
         </div>
-      </div>
-      <div class="tbl-filters">
-        <span class="filter-label">Status:</span>
-        <div class="mini-filter">
-          <button class="mf-all" data-sf="all" onclick="setStatusFilter('all','all')">All</button>
-          <button data-sf="started" onclick="setStatusFilter('all','started')">Started</button>
-          <button data-sf="noshow" onclick="setStatusFilter('all','noshow')">No-Show</button>
-          <button data-sf="cancelled" onclick="setStatusFilter('all','cancelled')">Cancelled</button>
-          <button data-sf="uncommitted" onclick="setStatusFilter('all','uncommitted')">Uncommitted</button>
-          <button data-sf="obs" onclick="setStatusFilter('all','obs')">OBS</button>
+        <div class="src-table-wrap">
+          <table class="src-table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th class="num">Showed</th>
+                <th class="num">No-Showed</th>
+                <th class="num">Started</th>
+                <th class="num">Total</th>
+                <th class="num">No-Show %</th>
+                <th class="bar-cell">Rate</th>
+              </tr>
+            </thead>
+            <tbody id="src-breakdown-body"></tbody>
+          </table>
         </div>
-      </div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr>
-            <th>Patient</th><th>Source</th><th>Status</th><th>Location</th>
-            <th class="sortable" onclick="toggleSort('all')">Date<span id="all-sort-icon"> ⇅</span></th>
-            <th>Month/Year</th>
-          </tr></thead>
-          <tbody id="all-tbl-body"></tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -228,16 +190,15 @@ tbody tr:hover td{background:var(--surface2);}
     <span class="section-badge badge-noshow" id="noshow-count">0 no-shows</span>
   </div>
 
-  <!-- NO-SHOW KPI BAR -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0 24px;height:72px;display:flex;align-items:center;margin-top:16px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0 24px;height:72px;display:flex;align-items:center;">
     <div class="kpi"><div class="kpi-lbl">Total No-Shows</div><div class="kpi-val red" id="ns-total">-</div></div>
     <div class="kpi"><div class="kpi-lbl">No-Show Rate</div><div class="kpi-val red" id="ns-rate">-</div></div>
-    <div class="kpi"><div class="kpi-lbl">Top No-Show Source</div><div class="kpi-val yellow" id="ns-topsource" style="font-size:15px">-</div></div>
-    <div class="kpi"><div class="kpi-lbl">Highest Rate Source</div><div class="kpi-val purple" id="ns-highrate" style="font-size:15px">-</div></div>
+    <div class="kpi"><div class="kpi-lbl">Top No-Show Source</div><div class="kpi-val yellow" id="ns-topsource">-</div></div>
+    <div class="kpi"><div class="kpi-lbl">Highest Rate Source</div><div class="kpi-val purple" id="ns-highrate" style="font-size:14px">-</div></div>
   </div>
 
   <div class="section-block">
-    <div class="charts-row">
+    <div class="two-col">
       <div class="card">
         <div class="card-head"><span>No-Shows by Source</span></div>
         <div class="pie-layout">
@@ -246,31 +207,24 @@ tbody tr:hover td{background:var(--surface2);}
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><span>No-Show Rate % by Source</span></div>
-        <div class="chart-wrap"><canvas id="nsBar"></canvas></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <span>No-Show Records</span>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span id="ns-tbl-count" style="color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:0;text-transform:none"></span>
-          <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="ns-search" placeholder="Search..." oninput="onSearch('ns',this.value)">
-            <button class="search-clear" id="ns-search-clear" onclick="clearSearch('ns')">✕</button>
-          </div>
+        <div class="card-head">
+          <span>No-Show Source Breakdown</span>
+          <span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">ranked by no-show count</span>
         </div>
-      </div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr>
-            <th>Patient</th><th>Source</th><th>Location</th>
-            <th class="sortable" onclick="toggleSort('ns')">Date<span id="ns-sort-icon"> ⇅</span></th>
-            <th>Month/Year</th>
-          </tr></thead>
-          <tbody id="ns-tbl-body"></tbody>
-        </table>
+        <div class="src-table-wrap">
+          <table class="ns-src-table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th class="num">No-Shows</th>
+                <th class="num">Total from Source</th>
+                <th class="num">No-Show Rate</th>
+                <th class="bar-cell">Rate Bar</th>
+              </tr>
+            </thead>
+            <tbody id="ns-breakdown-body"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -280,10 +234,8 @@ tbody tr:hover td{background:var(--surface2);}
 <script>
 const CSV='https://script.google.com/macros/s/AKfycbwitgD7_9mXTrw9RIj6PLwqelo7qVwakzJX32LHk-VPPQyBRHORR0Svd0wfg0iPcCyR/exec';
 const SRC_COLORS=['#0ea5e9','#a855f7','#22c55e','#f59e0b','#ef4444','#ec4899','#f97316','#06b6d4','#84cc16','#6366f1'];
-let all=[],period='annual',loc='all';
-let allStatusFilter='all',allSearch='',allSort='desc';
-let nsSearch='',nsSort='desc';
-let allPieChart=null,allBarChart=null,nsPieChart=null,nsBarChart=null;
+let all=[],period='annual',loc='Clarkston';
+let allPieChart=null,nsPieChart=null;
 
 function statusKey(s){
   if(!s)return'unknown';
@@ -294,35 +246,6 @@ function statusKey(s){
   if(v.includes('uncommitted'))return'uncommitted';
   if(v.includes('obs'))return'obs';
   return'unknown';
-}
-
-function statusClass(s){
-  const map={started:'b-started',noshow:'b-noshow',cancelled:'b-cancelled',uncommitted:'b-uncommitted',obs:'b-obs'};
-  return map[statusKey(s)]||'b-uncommitted';
-}
-
-function locClass(l){
-  if(!l)return'b-loc-unknown';
-  const v=l.toLowerCase();
-  if(v.includes('buda'))return'b-loc-buda';
-  if(v.includes('leander'))return'b-loc-leander';
-  if(v.includes('marble'))return'b-loc-marble';
-  if(v.includes('lakeline'))return'b-loc-lakeline';
-  if(v.includes('clarkston'))return'b-loc-clarkston';
-  return'b-loc-unknown';
-}
-
-function fmtDate(d){
-  if(!d)return'-';
-  const dt=new Date(d);
-  if(isNaN(dt))return d;
-  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-}
-
-function hl(text,q){
-  if(!q||!text)return text;
-  const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return String(text).replace(new RegExp('('+e+')','gi'),'<mark class="highlight">$1</mark>');
 }
 
 function filterByPeriod(pts){
@@ -342,89 +265,84 @@ function filterByPeriod(pts){
 }
 
 function getBase(){
-  let pts=loc==='all'?all:all.filter(p=>p.loc===loc);
+  let pts=all.filter(p=>p.loc===loc);
   return filterByPeriod(pts);
 }
 
-function makePie(canvasId,legendId,data,colors,total,existingChart){
-  if(existingChart)existingChart.destroy();
+function makePie(canvasId,legendId,data,colors,total,existing){
+  if(existing)existing.destroy();
   const ctx=document.getElementById(canvasId).getContext('2d');
   const chart=new Chart(ctx,{
     type:'doughnut',
     data:{labels:data.map(d=>d.label),datasets:[{data:data.map(d=>d.count),backgroundColor:colors.map(c=>c+'cc'),borderColor:colors,borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:true,cutout:'60%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',callbacks:{label:c=>` ${c.parsed} (${Math.round(c.parsed/total*100)}%)`}}}}
+    options:{responsive:true,maintainAspectRatio:true,cutout:'60%',
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',
+        callbacks:{label:c=>` ${c.parsed} (${Math.round(c.parsed/(total||1)*100)}%)`}}}}
   });
-  const legend=document.getElementById(legendId);
-  legend.innerHTML=data.map((d,i)=>`
+  document.getElementById(legendId).innerHTML=data.map((d,i)=>`
     <div class="legend-row">
       <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div><span class="legend-name">${d.label}</span></div>
-      <div class="legend-right"><span class="legend-count">${d.count}</span><span class="legend-pct">${Math.round(d.count/total*100)}%</span></div>
+      <div class="legend-right"><span class="legend-count">${d.count}</span><span class="legend-pct">${Math.round(d.count/(total||1)*100)}%</span></div>
     </div>`).join('');
   return chart;
+}
+
+function rateClass(rate){
+  if(rate<=20)return'rate-low';
+  if(rate<=40)return'rate-mid';
+  return'rate-high';
 }
 
 function renderAll(base){
   const total=base.length;
   document.getElementById('all-count').textContent=total+' records';
 
-  // KPIs
   const shows=base.filter(p=>statusKey(p.status)==='started').length;
   const noshows=base.filter(p=>statusKey(p.status)==='noshow').length;
   const cancelled=base.filter(p=>statusKey(p.status)==='cancelled').length;
+  const started=base.filter(p=>statusKey(p.status)==='started').length;
+
   const srcCount={};
   base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
   const topSrc=Object.entries(srcCount).sort((a,b)=>b[1]-a[1])[0];
+
   document.getElementById('k-total').textContent=total;
   document.getElementById('k-show').textContent=total>0?Math.round(shows/total*100)+'%':'-';
   document.getElementById('k-noshow').textContent=total>0?Math.round(noshows/total*100)+'%':'-';
   document.getElementById('k-topsource').textContent=topSrc?topSrc[0]:'-';
+  document.getElementById('k-started').textContent=started;
   document.getElementById('k-cancelled').textContent=total>0?Math.round(cancelled/total*100)+'%':'-';
-  document.getElementById('k-started').textContent=shows;
 
   // Pie
-  const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1],color:SRC_COLORS[i%SRC_COLORS.length]}));
-  const colors=srcData.map(s=>s.color);
-  allPieChart=makePie('allPie','all-pie-legend',srcData,colors,total||1,allPieChart);
+  const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1]}));
+  const colors=srcData.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]);
+  allPieChart=makePie('allPie','all-pie-legend',srcData,colors,total,allPieChart);
 
-  // Bar
-  const sources=srcData.slice(0,8).map(s=>s.label);
-  const statuses=['started','noshow','cancelled','uncommitted','obs'];
-  const statusLabels=['Started','No-Show','Cancelled','Uncommitted','OBS'];
-  const statusColors=['#22c55e','#ef4444','#f97316','#0ea5e9','#a855f7'];
-  const datasets=statuses.map((sk,i)=>({
-    label:statusLabels[i],
-    data:sources.map(src=>base.filter(p=>p.source===src&&statusKey(p.status)===sk).length),
-    backgroundColor:statusColors[i]+'44',borderColor:statusColors[i],borderWidth:2,borderRadius:4
-  }));
-  if(allBarChart)allBarChart.destroy();
-  const ctx=document.getElementById('allBar').getContext('2d');
-  allBarChart=new Chart(ctx,{type:'bar',data:{labels:sources,datasets},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{family:'DM Mono',size:10},boxWidth:10}},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8'}},
-      scales:{x:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},maxRotation:25}},y:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},stepSize:1},beginAtZero:true}}}});
+  // Source breakdown table
+  const sources=Object.keys(srcCount).sort((a,b)=>srcCount[b]-srcCount[a]);
+  const maxTotal=Math.max(...sources.map(s=>srcCount[s]),1);
+  const tbody=document.getElementById('src-breakdown-body');
+  if(!sources.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px">No data</td></tr>';return;}
 
-  // Table
-  renderAllTable(base);
-}
-
-function renderAllTable(base){
-  let pts=[...base];
-  if(allStatusFilter!=='all')pts=pts.filter(p=>statusKey(p.status)===allStatusFilter);
-  if(allSearch){const q=allSearch.toLowerCase();pts=pts.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.source||'').toLowerCase().includes(q)||(p.status||'').toLowerCase().includes(q)||(p.loc||'').toLowerCase().includes(q));}
-  if(allSort==='asc')pts.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  else pts.sort((a,b)=>new Date(b.date)-new Date(a.date));
-  document.getElementById('all-tbl-count').textContent=pts.length+' records';
-  const tbody=document.getElementById('all-tbl-body');
-  if(!pts.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px">No records found</td></tr>';return;}
-  const q=allSearch;
-  tbody.innerHTML=pts.map(p=>`<tr>
-    <td class="pt-name">${q?hl(p.name,q):p.name}</td>
-    <td>${q?hl(p.source,q):p.source}</td>
-    <td><span class="badge ${statusClass(p.status)}">${p.status}</span></td>
-    <td><span class="badge ${locClass(p.loc)}">${p.loc}</span></td>
-    <td>${fmtDate(p.date)}</td>
-    <td>${p.monthYear||'-'}</td>
-  </tr>`).join('');
+  tbody.innerHTML=sources.map((src,i)=>{
+    const srcPts=base.filter(p=>p.source===src);
+    const srcTotal=srcPts.length;
+    const showed=srcPts.filter(p=>statusKey(p.status)==='started').length;
+    const noShowed=srcPts.filter(p=>statusKey(p.status)==='noshow').length;
+    const startedSrc=srcPts.filter(p=>statusKey(p.status)==='started').length;
+    const nsRate=srcTotal>0?Math.round(noShowed/srcTotal*100):0;
+    const barW=Math.round(srcTotal/maxTotal*100);
+    const color=SRC_COLORS[i%SRC_COLORS.length];
+    return`<tr>
+      <td class="src-name" style="color:${color}">${src}</td>
+      <td class="num-cell"><span class="num-showed">${showed}</span></td>
+      <td class="num-cell"><span class="num-noshow">${noShowed}</span></td>
+      <td class="num-cell"><span class="num-started">${startedSrc}</span></td>
+      <td class="num-cell" style="color:#fff;font-weight:700">${srcTotal}</td>
+      <td class="rate-cell"><span class="rate-badge ${rateClass(nsRate)}">${nsRate}%</span></td>
+      <td class="bar-cell"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%;background:${color}"></div></div></td>
+    </tr>`;
+  }).join('');
 }
 
 function renderNoShows(base){
@@ -435,59 +353,42 @@ function renderNoShows(base){
   document.getElementById('ns-total').textContent=nsTotal;
   document.getElementById('ns-rate').textContent=total>0?Math.round(nsTotal/total*100)+'%':'-';
 
-  // Top no-show source by count
   const srcCount={};
   noshows.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
+  const allSrcCount={};
+  base.forEach(p=>{if(p.source)allSrcCount[p.source]=(allSrcCount[p.source]||0)+1;});
+
   const topNsSrc=Object.entries(srcCount).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('ns-topsource').textContent=topNsSrc?topNsSrc[0]:'-';
 
-  // Highest no-show rate source
-  const allSrcCount={};
-  base.forEach(p=>{if(p.source)allSrcCount[p.source]=(allSrcCount[p.source]||0)+1;});
   const rateEntries=Object.entries(srcCount).map(([src,nsCount])=>({src,rate:nsCount/(allSrcCount[src]||1)}));
   const highRateSrc=rateEntries.sort((a,b)=>b.rate-a.rate)[0];
   document.getElementById('ns-highrate').textContent=highRateSrc?`${highRateSrc.src} (${Math.round(highRateSrc.rate*100)}%)`:'-';
 
   // Pie
-  const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1],color:SRC_COLORS[i%SRC_COLORS.length]}));
-  const colors=srcData.map(s=>s.color);
-  nsPieChart=makePie('nsPie','ns-pie-legend',srcData,colors,nsTotal||1,nsPieChart);
+  const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1]}));
+  const colors=srcData.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]);
+  nsPieChart=makePie('nsPie','ns-pie-legend',srcData,colors,nsTotal,nsPieChart);
 
-  // No-show rate bar
-  const sources=Object.entries(allSrcCount).sort((a,b)=>b[1]-a[1]).slice(0,8).map(s=>s[0]);
-  const rateData=sources.map(src=>{
-    const ns=srcCount[src]||0;
-    const tot=allSrcCount[src]||1;
-    return Math.round(ns/tot*100);
-  });
-  if(nsBarChart)nsBarChart.destroy();
-  const ctx=document.getElementById('nsBar').getContext('2d');
-  nsBarChart=new Chart(ctx,{type:'bar',
-    data:{labels:sources,datasets:[{label:'No-Show Rate %',data:rateData,backgroundColor:sources.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]+'44'),borderColor:sources.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]),borderWidth:2,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',callbacks:{label:c=>` ${c.parsed}% no-show rate`}}},
-      scales:{x:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},maxRotation:25}},y:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},callback:v=>v+'%'},beginAtZero:true,max:100}}}});
+  // NS breakdown table
+  const sources=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]);
+  const maxNs=Math.max(...sources.map(s=>s[1]),1);
+  const tbody=document.getElementById('ns-breakdown-body');
+  if(!sources.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">No no-show data</td></tr>';return;}
 
-  // Table
-  renderNsTable(noshows);
-}
-
-function renderNsTable(noshows){
-  let pts=[...noshows];
-  if(nsSearch){const q=nsSearch.toLowerCase();pts=pts.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.source||'').toLowerCase().includes(q)||(p.loc||'').toLowerCase().includes(q));}
-  if(nsSort==='asc')pts.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  else pts.sort((a,b)=>new Date(b.date)-new Date(a.date));
-  document.getElementById('ns-tbl-count').textContent=pts.length+' no-shows';
-  const tbody=document.getElementById('ns-tbl-body');
-  if(!pts.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">No no-show records found</td></tr>';return;}
-  const q=nsSearch;
-  tbody.innerHTML=pts.map(p=>`<tr>
-    <td class="pt-name">${q?hl(p.name,q):p.name}</td>
-    <td>${q?hl(p.source,q):p.source}</td>
-    <td><span class="badge ${locClass(p.loc)}">${p.loc}</span></td>
-    <td>${fmtDate(p.date)}</td>
-    <td>${p.monthYear||'-'}</td>
-  </tr>`).join('');
+  tbody.innerHTML=sources.map(([src,nsCount],i)=>{
+    const srcTotal=allSrcCount[src]||0;
+    const nsRate=srcTotal>0?Math.round(nsCount/srcTotal*100):0;
+    const barW=Math.round(nsCount/maxNs*100);
+    const color=SRC_COLORS[i%SRC_COLORS.length];
+    return`<tr>
+      <td class="src-name" style="color:${color}">${src}</td>
+      <td class="num-cell"><span class="num-noshow">${nsCount}</span></td>
+      <td class="num-cell" style="color:#fff;font-weight:700">${srcTotal}</td>
+      <td class="rate-cell"><span class="rate-badge ${rateClass(nsRate)}">${nsRate}%</span></td>
+      <td class="bar-cell"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%;background:${color}"></div></div></td>
+    </tr>`;
+  }).join('');
 }
 
 function update(){
@@ -507,42 +408,11 @@ function setLoc(l){
   document.querySelectorAll('.filter-group button[data-loc]').forEach(b=>{
     b.className=b.className.replace(/active-\S+/g,'').trim();
     if(b.dataset.loc===l){
-      const map={'all':'active-all','Buda':'active-buda','Leander':'active-leander','Marble Falls':'active-marble','Lakeline':'active-lakeline','Clarkston':'active-clarkston'};
-      b.classList.add(map[l]||'active-all');
+      const map={'Buda':'active-buda','Leander':'active-leander','Marble Falls':'active-marble','Lakeline':'active-lakeline','Clarkston':'active-clarkston'};
+      b.classList.add(map[l]||'active-clarkston');
     }
   });
   update();
-}
-
-function setStatusFilter(section,s){
-  allStatusFilter=s;
-  document.querySelectorAll('.mini-filter button[data-sf]').forEach(b=>{
-    b.className='';
-    if(b.dataset.sf===s)b.className='mf-'+s;
-  });
-  renderAllTable(getBase());
-}
-
-function toggleSort(section){
-  if(section==='all'){
-    allSort=allSort==='desc'?'asc':'desc';
-    document.getElementById('all-sort-icon').textContent=allSort==='asc'?' ▲':' ▼';
-    renderAllTable(getBase());
-  } else {
-    nsSort=nsSort==='desc'?'asc':'desc';
-    document.getElementById('ns-sort-icon').textContent=nsSort==='asc'?' ▲':' ▼';
-    renderNsTable(getBase().filter(p=>statusKey(p.status)==='noshow'));
-  }
-}
-
-function onSearch(section,val){
-  if(section==='all'){allSearch=val.trim();document.getElementById('all-search-clear').classList.toggle('visible',allSearch.length>0);renderAllTable(getBase());}
-  else{nsSearch=val.trim();document.getElementById('ns-search-clear').classList.toggle('visible',nsSearch.length>0);renderNsTable(getBase().filter(p=>statusKey(p.status)==='noshow'));}
-}
-
-function clearSearch(section){
-  if(section==='all'){allSearch='';document.getElementById('all-search').value='';document.getElementById('all-search-clear').classList.remove('visible');renderAllTable(getBase());}
-  else{nsSearch='';document.getElementById('ns-search').value='';document.getElementById('ns-search-clear').classList.remove('visible');renderNsTable(getBase().filter(p=>statusKey(p.status)==='noshow'));}
 }
 
 async function load(){
