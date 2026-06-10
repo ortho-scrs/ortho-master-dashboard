@@ -126,7 +126,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
 <div class="kpi-bar">
   <div class="kpi"><div class="kpi-lbl">Showed Appointments</div><div class="kpi-val blue" id="k-showed">-</div></div>
-  <div class="kpi"><div class="kpi-lbl">Top Source</div><div class="kpi-val yellow" id="k-topsource">-</div></div>
+  <div class="kpi"><div class="kpi-lbl">Highest No-Show Source</div><div class="kpi-val yellow" id="k-topsource">-</div></div>
   <div class="kpi"><div class="kpi-lbl">Total No-Shows</div><div class="kpi-val red" id="k-noshow">-</div></div>
 </div>
 
@@ -150,7 +150,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <div class="card">
         <div class="card-head">
           <span>Source Breakdown</span>
-          <span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">Showed / No-Showed</span>
+          <span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">ranked by no-show %</span>
         </div>
         <div class="src-table-wrap">
           <table class="src-table">
@@ -226,10 +226,8 @@ let allPieChart=null,nsPieChart=null;
 
 function parseDate(str){
   if(!str)return null;
-  // Try direct parse first
   let d=new Date(str);
   if(!isNaN(d)&&d.getFullYear()>2000)return d;
-  // Handle short year format: MM/DD/YY or MM/DD/YY H:MM AM/PM
   const shortYear=/^(\d{1,2})\/(\d{1,2})\/(\d{2})(.*)/;
   const m=str.match(shortYear);
   if(m){
@@ -245,6 +243,11 @@ function statusKey(s){
   const v=s.toLowerCase();
   if(v.includes('no-show')||v.includes('noshow')||v.includes('no show'))return'noshow';
   return'showed';
+}
+
+function nsRate(src,base,srcCount){
+  const ns=base.filter(p=>p.source===src&&statusKey(p.status)==='noshow').length;
+  return ns/(srcCount[src]||1);
 }
 
 function filterByPeriod(pts){
@@ -300,25 +303,20 @@ function renderAll(base){
 
   const srcCount={};
   base.forEach(p=>{if(p.source)srcCount[p.source]=(srcCount[p.source]||0)+1;});
-  const topSrc=Object.entries(srcCount).filter(([s])=>srcCount[s]>2).sort((a,b)=>{
-    const rateA=base.filter(p=>p.source===a[0]&&statusKey(p.status)==='noshow').length/(a[1]||1);
-    const rateB=base.filter(p=>p.source===b[0]&&statusKey(p.status)==='noshow').length/(b[1]||1);
-    return rateB-rateA;
-  })[0];
+
+  // Top source by highest no-show rate
+  const topSrc=Object.entries(srcCount).filter(([s])=>srcCount[s]>2).sort((a,b)=>nsRate(b[0],base,srcCount)-nsRate(a[0],base,srcCount))[0];
 
   document.getElementById('k-showed').textContent=showed;
-  document.getElementById('k-topsource').textContent=topSrc?topSrc[0]:'-';
+  document.getElementById('k-topsource').textContent=topSrc?`${topSrc[0]} (${Math.round(nsRate(topSrc[0],base,srcCount)*100)}%)`:'-';
   document.getElementById('k-noshow').textContent=noshows;
 
   const srcData=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).map((s,i)=>({label:s[0],count:s[1]}));
   const colors=srcData.map((_,i)=>SRC_COLORS[i%SRC_COLORS.length]);
   allPieChart=makePie('allPie','all-pie-legend',srcData,colors,total,allPieChart);
 
-  const sources=Object.keys(srcCount).filter(s=>srcCount[s]>2).sort((a,b)=>{
-    const rateA=base.filter(p=>p.source===a&&statusKey(p.status)==='noshow').length/(srcCount[a]||1);
-    const rateB=base.filter(p=>p.source===b&&statusKey(p.status)==='noshow').length/(srcCount[b]||1);
-    return rateB-rateA;
-  });
+  // Sort by no-show % descending
+  const sources=Object.keys(srcCount).filter(s=>srcCount[s]>2).sort((a,b)=>nsRate(b,base,srcCount)-nsRate(a,base,srcCount));
   const maxTotal=Math.max(...sources.map(s=>srcCount[s]),1);
   const tbody=document.getElementById('src-breakdown-body');
   if(!sources.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px">No data</td></tr>';return;}
@@ -328,15 +326,15 @@ function renderAll(base){
     const srcTotal=srcPts.length;
     const showedSrc=srcPts.filter(p=>statusKey(p.status)==='showed').length;
     const noShowed=srcPts.filter(p=>statusKey(p.status)==='noshow').length;
-    const nsRate=srcTotal>0?Math.round(noShowed/srcTotal*100):0;
+    const rate=srcTotal>0?Math.round(noShowed/srcTotal*100):0;
     const barW=Math.round(srcTotal/maxTotal*100);
     const color=SRC_COLORS[i%SRC_COLORS.length];
     return`<tr>
-      <td class="num-cell" style="color:#fff;font-weight:700">${srcTotal}</td>
       <td class="src-name" style="color:${color}">${src}</td>
+      <td class="num-cell" style="color:#fff;font-weight:700">${srcTotal}</td>
       <td class="num-cell"><span class="num-showed">${showedSrc}</span></td>
       <td class="num-cell"><span class="num-noshow">${noShowed}</span></td>
-      <td class="rate-cell"><span class="rate-badge ${rateClass(nsRate)}">${nsRate}%</span></td>
+      <td class="rate-cell"><span class="rate-badge ${rateClass(rate)}">${rate}%</span></td>
       <td class="bar-cell"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%;background:${color}"></div></div></td>
     </tr>`;
   }).join('');
@@ -368,14 +366,14 @@ function renderNoShows(base){
 
   tbody.innerHTML=sources.map(([src,nsCount],i)=>{
     const srcTotal=allSrcCount[src]||0;
-    const nsRate=srcTotal>0?Math.round(nsCount/srcTotal*100):0;
+    const rate=srcTotal>0?Math.round(nsCount/srcTotal*100):0;
     const barW=Math.round(nsCount/maxNs*100);
     const color=SRC_COLORS[i%SRC_COLORS.length];
     return`<tr>
       <td class="num-cell"><span class="num-noshow">${nsCount}</span></td>
       <td class="src-name" style="color:${color}">${src}</td>
       <td class="num-cell" style="color:#fff;font-weight:700">${srcTotal}</td>
-      <td class="rate-cell"><span class="rate-badge ${rateClass(nsRate)}">${nsRate}%</span></td>
+      <td class="rate-cell"><span class="rate-badge ${rateClass(rate)}">${rate}%</span></td>
       <td class="bar-cell"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%;background:${color}"></div></div></td>
     </tr>`;
   }).join('');
@@ -412,7 +410,7 @@ async function load(){
     const parsed=Papa.parse(txt,{header:true,skipEmptyLines:true});
     all=parsed.data.map(row=>{
       const v=Object.values(row);
-      return{name:v[0]||'',source:v[1]||'',status:v[2]||'',loc:v[3]||'',date:v[4]||'',monthYear:v[5]||''};
+      return{name:v[0]||'',source:v[1]||'',status:v[2]||'',loc:(v[3]||'').trim(),date:v[4]||'',monthYear:v[5]||''};
     }).filter(p=>p.name);
     document.getElementById('overlay').style.display='none';
     update();
