@@ -235,15 +235,13 @@ function filterByPeriod(pts){
   const now=new Date();
   const lm=new Date(now.getFullYear(),now.getMonth()-1,1);
   return pts.filter(p=>{
-    const d=new Date(p.date);
+    let d=new Date(p.date);
+    // Handle short year format like "01/09/26 3:00 PM"
+    if(isNaN(d)&&p.date){
+      const fixed=p.date.replace(/(\d{1,2}\/\d{1,2}\/)(\d{2})/,'$120$2');
+      d=new Date(fixed);
+    }
     if(isNaN(d))return true;
-    if(period==='lastmonth')return d.getFullYear()===lm.getFullYear()&&d.getMonth()===lm.getMonth();
-    if(period==='q1')return d.getFullYear()===now.getFullYear()&&d.getMonth()<=2;
-    if(period==='q2')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=3&&d.getMonth()<=5;
-    if(period==='q3')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=6&&d.getMonth()<=8;
-    if(period==='q4')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=9;
-    if(period==='annual')return d.getFullYear()===now.getFullYear();
-    return true;
   });
 }
 
