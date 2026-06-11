@@ -181,10 +181,67 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
     </div>
   </div>
 
-  <!-- FUNNEL VISUALIZATION -->
-  <div class="card">
-    <div class="card-head"><span>Funnel Visualization</span></div>
-    <div class="funnel-stages" id="funnel-stages"></div>
+  <div style="display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start;">
+    <!-- LEFT: KPI STATS -->
+    <div class="funnel-stats">
+      <div class="funnel-top">
+        <div class="funnel-card leads" style="width:100%;">
+          <div class="funnel-lbl">New Leads</div>
+          <div class="funnel-val blue" id="k-leads">-</div>
+          <div class="funnel-sub">Total entered pipeline</div>
+        </div>
+      </div>
+      <div class="funnel-bottom">
+        <div class="funnel-pair">
+          <div class="funnel-card booked">
+            <div class="funnel-lbl">Booked</div>
+            <div class="funnel-val green" id="k-booked">-</div>
+            <div class="funnel-sub">Appt scheduled</div>
+          </div>
+          <div class="funnel-card booking-pct">
+            <div class="funnel-lbl">Booking %</div>
+            <div class="funnel-val lime" id="k-booking-pct">-</div>
+            <div class="funnel-sub">Booked / Leads</div>
+          </div>
+        </div>
+        <div class="funnel-pair">
+          <div class="funnel-card showed">
+            <div class="funnel-lbl">Showed</div>
+            <div class="funnel-val teal" id="k-showed">-</div>
+            <div class="funnel-sub">Booked − No-Shows</div>
+          </div>
+          <div class="funnel-card noshow-pct">
+            <div class="funnel-lbl">No-Show Rate</div>
+            <div class="funnel-val red" id="k-noshow-pct">-</div>
+            <div class="funnel-sub">No-Shows / Booked</div>
+          </div>
+        </div>
+        <div class="funnel-pair">
+          <div class="funnel-card started">
+            <div class="funnel-lbl">Started</div>
+            <div class="funnel-val purple" id="k-started">-</div>
+            <div class="funnel-sub">Treatment started</div>
+          </div>
+          <div class="funnel-card close-pct">
+            <div class="funnel-lbl">Close Rate</div>
+            <div class="funnel-val pink" id="k-close-pct">-</div>
+            <div class="funnel-sub">Started / Showed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FUNNEL VISUAL + CHART -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-head"><span>Funnel Visualization</span></div>
+        <div class="funnel-stages" id="funnel-stages"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>Stage Counts</span></div>
+        <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+      </div>
+    </div>
   </div>
 
   <!-- STAGE COUNTS CHART -->
