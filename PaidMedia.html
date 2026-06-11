@@ -34,6 +34,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
 /* FUNNEL LAYOUT */
 .funnel-layout{display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start;}
+.funnel-left{display:flex;flex-direction:column;gap:12px;}
 .funnel-stats{display:flex;flex-direction:column;gap:12px;}
 .funnel-top{width:100%;}
 .funnel-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
@@ -46,7 +47,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .funnel-card.booked::before{background:#4ade80;}
 .funnel-card.booking-pct::before{background:#a3e635;}
 .funnel-card.showed::before{background:#34d399;}
-.funnel-card.noshow-pct::before{background:#f87171;}
+.funnel-card.show-pct::before{background:#22d3ee;}
 .funnel-card.started::before{background:#c084fc;}
 .funnel-card.close-pct::before{background:#f472b6;}
 .funnel-lbl{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-family:"DM Mono",monospace;}
@@ -55,7 +56,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .funnel-val.green{color:#4ade80;}
 .funnel-val.lime{color:#a3e635;}
 .funnel-val.teal{color:#34d399;}
-.funnel-val.red{color:#f87171;}
+.funnel-val.cyan{color:#22d3ee;}
 .funnel-val.purple{color:#c084fc;}
 .funnel-val.pink{color:#f472b6;}
 .funnel-sub{font-size:11px;color:var(--text-muted);font-family:"DM Mono",monospace;}
@@ -127,56 +128,88 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
   <div class="funnel-layout">
 
-    <!-- LEFT: KPI STATS -->
-    <div class="funnel-stats">
-      <div class="funnel-top">
-        <div class="funnel-card leads" style="width:100%;">
-          <div class="funnel-lbl">New Leads</div>
-          <div class="funnel-val blue" id="k-leads">-</div>
-          <div class="funnel-sub">Total entered pipeline</div>
+    <!-- LEFT COLUMN: KPI STATS + PICKUP RATE -->
+    <div class="funnel-left">
+
+      <!-- KPI STATS -->
+      <div class="funnel-stats">
+        <div class="funnel-top">
+          <div class="funnel-card leads" style="width:100%;">
+            <div class="funnel-lbl">New Leads</div>
+            <div class="funnel-val blue" id="k-leads">-</div>
+            <div class="funnel-sub">Total entered pipeline</div>
+          </div>
+        </div>
+        <div class="funnel-bottom">
+          <div class="funnel-pair">
+            <div class="funnel-card booked">
+              <div class="funnel-lbl">Booked</div>
+              <div class="funnel-val green" id="k-booked">-</div>
+              <div class="funnel-sub">Appt scheduled</div>
+            </div>
+            <div class="funnel-card booking-pct">
+              <div class="funnel-lbl">Booking %</div>
+              <div class="funnel-val lime" id="k-booking-pct">-</div>
+              <div class="funnel-sub">Booked / Leads</div>
+            </div>
+          </div>
+          <div class="funnel-pair">
+            <div class="funnel-card showed">
+              <div class="funnel-lbl">Showed</div>
+              <div class="funnel-val teal" id="k-showed">-</div>
+              <div class="funnel-sub">Booked − No-Shows</div>
+            </div>
+            <div class="funnel-card show-pct">
+              <div class="funnel-lbl">Show Rate</div>
+              <div class="funnel-val cyan" id="k-show-pct">-</div>
+              <div class="funnel-sub">Showed / Booked</div>
+            </div>
+          </div>
+          <div class="funnel-pair">
+            <div class="funnel-card started">
+              <div class="funnel-lbl">Started</div>
+              <div class="funnel-val purple" id="k-started">-</div>
+              <div class="funnel-sub">Treatment started</div>
+            </div>
+            <div class="funnel-card close-pct">
+              <div class="funnel-lbl">Close Rate</div>
+              <div class="funnel-val pink" id="k-close-pct">-</div>
+              <div class="funnel-sub">Started / Showed</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="funnel-bottom">
-        <div class="funnel-pair">
-          <div class="funnel-card booked">
-            <div class="funnel-lbl">Booked</div>
-            <div class="funnel-val green" id="k-booked">-</div>
-            <div class="funnel-sub">Appt scheduled</div>
-          </div>
-          <div class="funnel-card booking-pct">
-            <div class="funnel-lbl">Booking %</div>
-            <div class="funnel-val lime" id="k-booking-pct">-</div>
-            <div class="funnel-sub">Booked / Leads</div>
+
+      <!-- PICKUP RATE -->
+      <div class="card">
+        <div class="card-head">
+          <span>📞 Call Pickup Rate</span>
+          <div class="mini-filter">
+            <button class="mf-active" data-pickup="lastweek" onclick="setPickupPeriod('lastweek')">Last Week</button>
+            <button data-pickup="lastmonth" onclick="setPickupPeriod('lastmonth')">Last Month</button>
+            <button data-pickup="last90" onclick="setPickupPeriod('last90')">Last 90 Days</button>
           </div>
         </div>
-        <div class="funnel-pair">
-          <div class="funnel-card showed">
-            <div class="funnel-lbl">Showed</div>
-            <div class="funnel-val teal" id="k-showed">-</div>
-            <div class="funnel-sub">Booked − No-Shows</div>
+        <div class="pickup-kpi-row">
+          <div class="pickup-kpi">
+            <div class="pickup-kpi-lbl">Total Calls Made</div>
+            <div class="pickup-kpi-val blue" id="p-calls">-</div>
           </div>
-          <div class="funnel-card noshow-pct">
-            <div class="funnel-lbl">No-Show Rate</div>
-            <div class="funnel-val red" id="k-noshow-pct">-</div>
-            <div class="funnel-sub">No-Shows / Booked</div>
+          <div class="pickup-kpi">
+            <div class="pickup-kpi-lbl">Calls Picked Up</div>
+            <div class="pickup-kpi-val green" id="p-picked">-</div>
           </div>
-        </div>
-        <div class="funnel-pair">
-          <div class="funnel-card started">
-            <div class="funnel-lbl">Started</div>
-            <div class="funnel-val purple" id="k-started">-</div>
-            <div class="funnel-sub">Treatment started</div>
-          </div>
-          <div class="funnel-card close-pct">
-            <div class="funnel-lbl">Close Rate</div>
-            <div class="funnel-val pink" id="k-close-pct">-</div>
-            <div class="funnel-sub">Started / Showed</div>
+          <div class="pickup-kpi">
+            <div class="pickup-kpi-lbl">Avg Pickup Rate</div>
+            <div class="pickup-kpi-val yellow" id="p-rate">-</div>
           </div>
         </div>
+        <div class="chart-wrap"><canvas id="pickupChart"></canvas></div>
       </div>
+
     </div>
 
-    <!-- RIGHT: FUNNEL VISUAL + CHART -->
+    <!-- RIGHT COLUMN: FUNNEL VISUAL + STAGE COUNTS -->
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div class="card">
         <div class="card-head"><span>Funnel Visualization</span></div>
@@ -188,38 +221,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       </div>
     </div>
 
-  </div>
-
-  <!-- PICKUP RATE -->
-  <div class="section-divider">
-    <div class="section-label">📞 Call Pickup Rate</div>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-head">
-      <span>Pickup Rate Overview</span>
-      <div class="mini-filter">
-        <button class="mf-active" data-pickup="lastweek" onclick="setPickupPeriod('lastweek')">Last Week</button>
-        <button data-pickup="lastmonth" onclick="setPickupPeriod('lastmonth')">Last Month</button>
-        <button data-pickup="last90" onclick="setPickupPeriod('last90')">Last 90 Days</button>
-      </div>
-    </div>
-    <div class="pickup-kpi-row">
-      <div class="pickup-kpi">
-        <div class="pickup-kpi-lbl">Total Calls Made</div>
-        <div class="pickup-kpi-val blue" id="p-calls">-</div>
-      </div>
-      <div class="pickup-kpi">
-        <div class="pickup-kpi-lbl">Calls Picked Up</div>
-        <div class="pickup-kpi-val green" id="p-picked">-</div>
-      </div>
-      <div class="pickup-kpi">
-        <div class="pickup-kpi-lbl">Avg Pickup Rate</div>
-        <div class="pickup-kpi-val yellow" id="p-rate">-</div>
-      </div>
-    </div>
-    <div class="chart-wrap"><canvas id="pickupChart"></canvas></div>
   </div>
 
 </div>
@@ -240,190 +241,4 @@ function parseDate(str){
   return null;
 }
 
-function filterFunnelByPeriod(pts){
-  const now=new Date();
-  const lm=new Date(now.getFullYear(),now.getMonth()-1,1);
-  return pts.filter(p=>{
-    const d=parseDate(p.created);
-    if(!d)return true;
-    if(period==='lastmonth')return d.getFullYear()===lm.getFullYear()&&d.getMonth()===lm.getMonth();
-    if(period==='q1')return d.getFullYear()===now.getFullYear()&&d.getMonth()<=2;
-    if(period==='q2')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=3&&d.getMonth()<=5;
-    if(period==='q3')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=6&&d.getMonth()<=8;
-    if(period==='q4')return d.getFullYear()===now.getFullYear()&&d.getMonth()>=9;
-    if(period==='annual')return d.getFullYear()===now.getFullYear();
-    return true;
-  });
-}
-
-function filterPickupByPeriod(pts){
-  const now=new Date();
-  now.setHours(23,59,59,999);
-  return pts.filter(p=>{
-    const d=parseDate(p.date);
-    if(!d)return false;
-    if(pickupPeriod==='lastweek'){const c=new Date(now);c.setDate(c.getDate()-7);return d>=c&&d<=now;}
-    if(pickupPeriod==='lastmonth'){const c=new Date(now);c.setDate(c.getDate()-30);return d>=c&&d<=now;}
-    if(pickupPeriod==='last90'){const c=new Date(now);c.setDate(c.getDate()-90);return d>=c&&d<=now;}
-    return true;
-  });
-}
-
-function pct(a,b){return b>0?Math.round(a/b*100):0;}
-function dropClass(r){return r>=60?'drop-good':r>=40?'drop-mid':'drop-bad';}
-
-function renderFunnel(){
-  const base=filterFunnelByPeriod(funnelData);
-  const leads=base.reduce((s,p)=>s+p.newLead,0);
-  const booked=base.reduce((s,p)=>s+p.booked,0);
-  const noshow=base.reduce((s,p)=>s+p.noshow,0);
-  const started=base.reduce((s,p)=>s+p.started,0);
-  const showed=booked-noshow;
-  const bookingPct=pct(booked,leads);
-  const noshowPct=pct(noshow,booked);
-  const closePct=pct(started,showed);
-
-  document.getElementById('k-leads').textContent=leads;
-  document.getElementById('k-booked').textContent=booked;
-  document.getElementById('k-booking-pct').textContent=bookingPct+'%';
-  document.getElementById('k-showed').textContent=showed;
-  document.getElementById('k-noshow-pct').textContent=noshowPct+'%';
-  document.getElementById('k-started').textContent=started;
-  document.getElementById('k-close-pct').textContent=closePct+'%';
-
-  const stages=[
-    {label:'New Leads',count:leads,color:'#60a5fa'},
-    {label:'Booked',count:booked,color:'#4ade80'},
-    {label:'Showed',count:showed,color:'#34d399'},
-    {label:'Started',count:started,color:'#c084fc'},
-  ];
-
-  const funnelEl=document.getElementById('funnel-stages');
-  funnelEl.innerHTML=stages.map((s,i)=>{
-    const dropPct=i>0?pct(s.count,stages[i-1].count):100;
-    const widthPct=leads>0?Math.max(pct(s.count,leads),4):4;
-    const arrow=i>0?`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;color:var(--text-muted);font-size:12px;">↓ <span class="drop-badge ${dropClass(dropPct)}">${dropPct}% conversion</span></div>`:'';
-    return`${arrow}
-    <div class="funnel-stage">
-      <div class="funnel-stage-bar-wrap">
-        <div class="funnel-stage-bar" style="width:${widthPct}%;background:${s.color}22;border:1px solid ${s.color}55">
-          <span class="funnel-stage-lbl" style="color:${s.color}">${s.label}</span>
-        </div>
-      </div>
-      <div class="funnel-stage-count" style="color:${s.color}">${s.count}</div>
-      <div class="funnel-stage-pct">${pct(s.count,leads)}%</div>
-    </div>`;
-  }).join('');
-
-  if(funnelChart)funnelChart.destroy();
-  const ctx=document.getElementById('funnelChart').getContext('2d');
-  funnelChart=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['New Leads','Booked','Showed','Started'],
-      datasets:[{
-        data:[leads,booked,showed,started],
-        backgroundColor:['#60a5fa33','#4ade8033','#34d39933','#c084fc33'],
-        borderColor:['#60a5fa','#4ade80','#34d399','#c084fc'],
-        borderWidth:2,borderRadius:6
-      }]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8'}},
-      scales:{x:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:12}}},
-        y:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11},stepSize:1},beginAtZero:true}}}
-  });
-}
-
-function renderPickup(){
-  const base=filterPickupByPeriod(pickupData);
-  const totalCalls=base.reduce((s,p)=>s+p.callsMade,0);
-  const totalPicked=base.reduce((s,p)=>s+p.pickedUp,0);
-  const avgRate=totalCalls>0?Math.round(totalPicked/totalCalls*100):0;
-
-  document.getElementById('p-calls').textContent=totalCalls;
-  document.getElementById('p-picked').textContent=totalPicked;
-  document.getElementById('p-rate').textContent=avgRate+'%';
-
-  const sorted=[...base].sort((a,b)=>new Date(a.date)-new Date(b.date));
-
-  if(pickupChart)pickupChart.destroy();
-  const ctx=document.getElementById('pickupChart').getContext('2d');
-  pickupChart=new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:sorted.map(p=>{const d=parseDate(p.date);return d?d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):p.date;}),
-      datasets:[
-        {label:'Pickup Rate %',data:sorted.map(p=>p.rate),borderColor:'#fbbf24',backgroundColor:'#fbbf2422',borderWidth:2,pointRadius:3,tension:.3,fill:true},
-        {label:'Calls Made',data:sorted.map(p=>p.callsMade),borderColor:'#60a5fa',backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:.3,yAxisID:'y2'}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{family:'DM Mono',size:11},boxWidth:12}},
-        tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8'}},
-      scales:{
-        x:{grid:{color:'#1e2d42'},ticks:{color:'#94a3b8',font:{family:'DM Mono',size:10},maxRotation:45,maxTicksLimit:15}},
-        y:{grid:{color:'#1e2d42'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10},callback:v=>v+'%'},beginAtZero:true,max:100},
-        y2:{position:'right',grid:{display:false},ticks:{color:'#60a5fa',font:{family:'DM Mono',size:10}}}
-      }}
-  });
-}
-
-function update(){renderFunnel();renderPickup();}
-
-function setPeriod(p){
-  period=p;
-  document.querySelectorAll('.period-filter button').forEach(b=>b.classList.toggle('pf-active',b.dataset.period===p));
-  renderFunnel();
-}
-
-function setPickupPeriod(p){
-  pickupPeriod=p;
-  document.querySelectorAll('.mini-filter button').forEach(b=>b.classList.toggle('mf-active',b.dataset.pickup===p));
-  renderPickup();
-}
-
-async function load(){
-  try{
-    const [fRes,pRes]=await Promise.all([fetch(FUNNEL_CSV),fetch(PICKUP_CSV)]);
-    const [fTxt,pTxt]=await Promise.all([fRes.text(),pRes.text()]);
-
-    const fParsed=Papa.parse(fTxt,{header:true,skipEmptyLines:true});
-    funnelData=fParsed.data.map(row=>{
-      const v=Object.values(row);
-      return{
-        contactId:(v[0]||'').trim(),
-        newLead:parseInt(v[1])||0,
-        booked:parseInt(v[2])||0,
-        noshow:parseInt(v[3])||0,
-        started:parseInt(v[4])||0,
-        created:v[5]||''
-      };
-    }).filter(p=>p.contactId);
-
-    const pParsed=Papa.parse(pTxt,{header:true,skipEmptyLines:true});
-    pickupData=pParsed.data.map(row=>{
-      const v=Object.values(row);
-      const rawRate=parseFloat(String(v[4]).replace('%',''))||0;
-      return{
-        date:v[0]||'',
-        month:v[1]||'',
-        callsMade:parseInt(v[2])||0,
-        pickedUp:parseInt(v[3])||0,
-        rate:rawRate<1?Math.round(rawRate*10000)/100:rawRate
-      };
-    }).filter(p=>p.date&&p.callsMade>0);
-
-    document.getElementById('overlay').style.display='none';
-    update();
-  }catch(e){
-    document.querySelector('.load-txt').textContent='Error loading data. Please refresh.';
-    console.error(e);
-  }
-}
-
-load();
-setInterval(load,60000);
-</script>
-</body>
-</html>
+functio
