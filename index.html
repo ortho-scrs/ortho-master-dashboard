@@ -27,6 +27,9 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .nav-btn{width:100%;background:transparent;border:none;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-radius:8px;transition:all .2s;color:var(--text-dim);font-family:"Syne",sans-serif;font-size:13px;font-weight:700;letter-spacing:.04em;text-align:left;}
 .nav-btn:hover{background:var(--surface2);color:#fff;}
 .nav-btn.active{background:var(--surface2);color:#fff;}
+/* frozen / disabled nav item */
+.nav-btn.frozen{opacity:.45;cursor:not-allowed;pointer-events:none;}
+.nav-btn.frozen:hover{background:transparent;color:var(--text-dim);}
 .nav-btn-left{display:flex;align-items:center;gap:10px;}
 .nav-icon{font-size:16px;width:20px;text-align:center;}
 .nav-arrow{font-size:11px;color:var(--text-muted);transition:transform .2s;}
@@ -56,6 +59,9 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .quick-links{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;justify-content:center;}
 .quick-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;text-decoration:none;color:var(--text-dim);font-size:12px;font-weight:700;font-family:"DM Mono",monospace;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;display:flex;align-items:center;gap:8px;}
 .quick-card:hover{border-color:var(--accent);color:#fff;transform:translateY(-1px);}
+/* frozen / disabled quick card */
+.quick-card.frozen{opacity:.4;cursor:not-allowed;pointer-events:none;}
+.quick-card.frozen:hover{border-color:var(--border);color:var(--text-dim);transform:none;}
 </style>
 </head>
 <body>
@@ -135,18 +141,13 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
     </div>
 
     <div class="nav-item">
-      <button class="nav-btn" onclick="toggleMenu('media')">
+      <button class="nav-btn frozen" disabled aria-disabled="true" title="Coming soon">
         <div class="nav-btn-left">
           <span class="nav-icon">📈</span>
           <span>Paid Media</span>
         </div>
-        <span class="nav-arrow" id="arrow-media">▶</span>
+        <span class="pill soon">Soon</span>
       </button>
-      <div class="nav-sub" id="sub-media">
-        <a class="sub-link" href="PaidMedia.html">
-          <span class="sub-dot dot-pink"></span>Media Performance
-        </a>
-      </div>
     </div>
 
     <div class="sidebar-section">Rising Stars</div>
@@ -179,7 +180,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <div class="quick-links">
         <a class="quick-card" href="Pipeline.html">🔄 Pipeline</a>
         <a class="quick-card" href="NPE.html">📊 NPE Sources</a>
-        <a class="quick-card" href="PaidMedia.html">📈 Paid Media</a>
+        <span class="quick-card frozen" aria-disabled="true" title="Coming soon">📈 Paid Media · Soon</span>
         <a class="quick-card" href="Clarkston.html">📍 Clarkston</a>
       </div>
     </div>
