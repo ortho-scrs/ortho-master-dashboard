@@ -17,8 +17,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
 body{font-family:"Syne",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
-
-/* HEADER */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:16px;}
 .brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:0;}
 .brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#facc15,#f59e0b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
@@ -29,8 +27,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .period-filter button:last-child{border-right:none;}
 .period-filter button:hover:not(.pf-active){background:var(--surface2);color:#fff;}
 .pf-active{background:#0ea5e9!important;color:#fff!important;}
-
-/* KPI BAR */
 .kpi-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:88px;display:flex;align-items:center;gap:0;flex-shrink:0;}
 .kpi{display:flex;flex-direction:column;gap:4px;padding:0 32px 0 0;margin-right:32px;border-right:1px solid var(--border);}
 .kpi:last-child{border-right:none;margin-right:0;padding-right:0;}
@@ -41,20 +37,14 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .kpi-val.yellow{color:#fbbf24;}
 .kpi-val.purple{color:#c084fc;}
 .kpi-val.teal{color:#2dd4bf;}
-
-/* MAIN */
 .main{flex:1;padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
 .section-divider{display:flex;align-items:center;gap:16px;}
 .section-label{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;white-space:nowrap;}
 .section-line{flex:1;height:1px;background:var(--border);}
-
-/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;}
 .card-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;display:flex;justify-content:space-between;align-items:center;gap:16px;}
 .two-col{display:grid;grid-template-columns:380px 1fr;gap:20px;}
 .chart-wrap{padding:20px 24px;height:300px;position:relative;}
-
-/* PIE */
 .pie-layout{display:flex;align-items:center;gap:20px;padding:20px 24px;}
 .pie-canvas-wrap{width:200px;height:200px;flex-shrink:0;}
 .pie-legend{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:260px;}
@@ -65,8 +55,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .legend-right{display:flex;gap:10px;font-size:11px;font-family:"DM Mono",monospace;flex-shrink:0;}
 .legend-count{color:#fff;font-weight:700;}
 .legend-pct{color:var(--text-muted);}
-
-/* CALLER CARDS */
 .caller-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:20px 24px;}
 .caller-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;}
 .caller-name{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;font-family:"DM Mono",monospace;}
@@ -78,8 +66,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .caller-stat-val.blue{color:#60a5fa;}
 .caller-bar-wrap{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .caller-bar{height:100%;border-radius:2px;background:#0ea5e9;}
-
-/* TABLE */
 .tbl-filters{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .search-wrap{position:relative;display:flex;align-items:center;}
 .search-wrap input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 28px 7px 30px;font-family:"DM Mono",monospace;font-size:12px;color:#fff;outline:none;width:220px;transition:border-color .2s;}
@@ -102,8 +88,6 @@ tbody tr:hover td{background:var(--surface2);}
 .b-no{background:rgba(239,68,68,.18);color:#f87171;}
 .source-name{color:#fff;font-weight:700;}
 .highlight{background:rgba(56,189,248,.25);border-radius:2px;color:#fff;}
-
-/* OVERLAY */
 #overlay{position:fixed;inset:0;background:rgba(8,12,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
 .spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:#0ea5e9;border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -141,7 +125,6 @@ tbody tr:hover td{background:var(--surface2);}
 
 <div class="main">
 
-  <!-- CHARTS -->
   <div class="section-divider">
     <div class="section-label">📊 Referral Sources</div>
     <div class="section-line"></div>
@@ -156,12 +139,14 @@ tbody tr:hover td{background:var(--surface2);}
       </div>
     </div>
     <div class="card">
-      <div class="card-head"><span>Source Breakdown</span><span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">Total / Booked / Booking %</span></div>
+      <div class="card-head">
+        <span>Source Breakdown</span>
+        <span style="color:var(--text-muted);font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;font-family:'DM Mono',monospace">Total / Booked</span>
+      </div>
       <div class="chart-wrap"><canvas id="sourceBar"></canvas></div>
     </div>
   </div>
 
-  <!-- CALLER PERFORMANCE -->
   <div class="section-divider">
     <div class="section-label">📞 Caller Performance</div>
     <div class="section-line"></div>
@@ -172,7 +157,6 @@ tbody tr:hover td{background:var(--surface2);}
     <div class="caller-grid" id="caller-grid"></div>
   </div>
 
-  <!-- TABLE -->
   <div class="section-divider">
     <div class="section-label">📋 Referral Records</div>
     <div class="section-line"></div>
@@ -196,8 +180,7 @@ tbody tr:hover td{background:var(--surface2);}
           <tr>
             <th onclick="toggleSort('date')">Date<span class="sort-icon" id="sort-date">⇅</span></th>
             <th onclick="toggleSort('source')">Source<span class="sort-icon" id="sort-source">⇅</span></th>
-            <th onclick="toggleSort('contact')">Contact Name<span class="sort-icon" id="sort-contact">⇅</span></th>
-            <th onclick="toggleSort('patient')">Patient Name<span class="sort-icon" id="sort-patient">⇅</span></th>
+            <th onclick="toggleSort('patient')">Patient<span class="sort-icon" id="sort-patient">⇅</span></th>
             <th onclick="toggleSort('caller')">Caller<span class="sort-icon" id="sort-caller">⇅</span></th>
             <th>Contacted</th>
             <th onclick="toggleSort('booked')">Booked<span class="sort-icon" id="sort-booked">⇅</span></th>
@@ -218,6 +201,13 @@ const MONTHS=['January','February','March','April','May','June','July','August',
 
 let all=[],period='alltime',searchQ='',sortCol='date',sortDir='desc';
 let pieChart=null,barChart=null;
+
+function abbrevName(name){
+  if(!name)return'-';
+  const parts=name.trim().split(/\s+/);
+  if(parts.length===1)return parts[0];
+  return parts[0]+' '+parts[parts.length-1].charAt(0)+'.';
+}
 
 function parseDate(str){
   if(!str)return null;
@@ -240,9 +230,7 @@ function filterByPeriod(pts){
   const now=new Date();
   return pts.filter(p=>{
     if(period==='alltime')return true;
-    // use tab month for filtering since date column may be inconsistent
     const tabMonth=getMonthFromTab(p.month);
-    const yr=now.getFullYear();
     if(period==='currentmonth')return tabMonth===now.getMonth();
     if(period==='lastmonth'){
       const lm=now.getMonth()===0?11:now.getMonth()-1;
@@ -257,13 +245,9 @@ function filterByPeriod(pts){
   });
 }
 
-function getBase(){
-  return filterByPeriod(all);
-}
+function getBase(){return filterByPeriod(all);}
 
-function isYes(val){
-  return String(val).toLowerCase().trim()==='yes';
-}
+function isYes(val){return String(val).toLowerCase().trim()==='yes';}
 
 function hl(text,q){
   if(!q||!text)return text;
@@ -299,19 +283,13 @@ function renderCharts(base){
   const sorted=Object.entries(srcCount).sort((a,b)=>b[1]-a[1]);
   const total=base.length;
 
-  // Pie
   if(pieChart)pieChart.destroy();
   const pCtx=document.getElementById('sourcePie').getContext('2d');
   pieChart=new Chart(pCtx,{
     type:'doughnut',
     data:{
       labels:sorted.map(s=>s[0]),
-      datasets:[{
-        data:sorted.map(s=>s[1]),
-        backgroundColor:COLORS.map(c=>c+'cc'),
-        borderColor:COLORS,
-        borderWidth:2
-      }]
+      datasets:[{data:sorted.map(s=>s[1]),backgroundColor:COLORS.map(c=>c+'cc'),borderColor:COLORS,borderWidth:2}]
     },
     options:{responsive:true,maintainAspectRatio:true,cutout:'60%',
       plugins:{legend:{display:false},tooltip:{backgroundColor:'#151e2e',borderColor:'#1e2d42',borderWidth:1,titleColor:'#fff',bodyColor:'#94a3b8',
@@ -324,7 +302,6 @@ function renderCharts(base){
       <div class="legend-right"><span class="legend-count">${s[1]}</span><span class="legend-pct">${Math.round(s[1]/(total||1)*100)}%</span></div>
     </div>`).join('');
 
-  // Bar
   if(barChart)barChart.destroy();
   const bCtx=document.getElementById('sourceBar').getContext('2d');
   const top8=sorted.slice(0,8);
@@ -350,12 +327,10 @@ function renderCharts(base){
 function renderCallers(base){
   const callerCount={};
   const callerBooked={};
-  const callerContacted={};
   base.forEach(p=>{
     if(!p.caller)return;
     callerCount[p.caller]=(callerCount[p.caller]||0)+1;
     if(isYes(p.booked))callerBooked[p.caller]=(callerBooked[p.caller]||0)+1;
-    if(isYes(p.contacted))callerContacted[p.caller]=(callerContacted[p.caller]||0)+1;
   });
   const sorted=Object.entries(callerCount).sort((a,b)=>b[1]-a[1]);
   const maxCount=sorted.length>0?sorted[0][1]:1;
@@ -384,7 +359,6 @@ function renderTable(base){
     pts=pts.filter(p=>
       (p.source||'').toLowerCase().includes(q)||
       (p.caller||'').toLowerCase().includes(q)||
-      (p.contactName||'').toLowerCase().includes(q)||
       (p.patientName||'').toLowerCase().includes(q)
     );
   }
@@ -392,7 +366,6 @@ function renderTable(base){
     let av,bv;
     if(sortCol==='date'){av=parseDate(a.date)||new Date(0);bv=parseDate(b.date)||new Date(0);}
     else if(sortCol==='source'){av=a.source||'';bv=b.source||'';}
-    else if(sortCol==='contact'){av=a.contactName||'';bv=b.contactName||'';}
     else if(sortCol==='patient'){av=a.patientName||'';bv=b.patientName||'';}
     else if(sortCol==='caller'){av=a.caller||'';bv=b.caller||'';}
     else if(sortCol==='booked'){av=isYes(a.booked)?1:0;bv=isYes(b.booked)?1:0;}
@@ -403,7 +376,7 @@ function renderTable(base){
   });
   document.getElementById('tbl-count').textContent=pts.length+' records';
   const tbody=document.getElementById('tbl-body');
-  if(!pts.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px">No records found</td></tr>';return;}
+  if(!pts.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">No records found</td></tr>';return;}
   const q=searchQ;
   tbody.innerHTML=pts.map(p=>{
     const d=parseDate(p.date);
@@ -411,8 +384,7 @@ function renderTable(base){
     return`<tr>
       <td>${dateStr}</td>
       <td class="source-name">${q?hl(p.source,q):p.source||'-'}</td>
-      <td>${q?hl(p.contactName,q):p.contactName||'-'}</td>
-      <td>${p.patientName||'-'}</td>
+      <td>${abbrevName(p.patientName)}</td>
       <td>${q?hl(p.caller,q):p.caller||'-'}</td>
       <td><span class="badge ${isYes(p.contacted)?'b-yes':'b-no'}">${p.contacted||'-'}</span></td>
       <td><span class="badge ${isYes(p.booked)?'b-yes':'b-no'}">${p.booked||'-'}</span></td>
@@ -474,7 +446,7 @@ async function load(){
         booked:String(row[7]||'').trim(),
         month:String(row[8]||'').trim()
       };
-    }).filter(p=>p.source||p.contactName||p.patientName);
+    }).filter(p=>p.source||p.patientName);
     document.getElementById('overlay').style.display='none';
     update();
   }catch(e){
